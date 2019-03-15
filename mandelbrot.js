@@ -1,16 +1,18 @@
 let canvas = document.getElementById("frac");
-canvas.width = 680;
-canvas.height = 680;
-
+canvas.width = 600;
+canvas.height = 600;
 frac = canvas.getContext("2d");
+
+let iterations = 200;
+var magnificationFactor = 280;
+let panX = 1.45;
+let panY = 2;
 
 function checkIfBelongsToMandelbrotSet(x, y) {
   var realComponentOfResult = x;
   var imaginaryComponentOfResult = y;
 
-  for (var i = 0; i < 100; i++) {
-    // Calculate the real and imaginary components of the result
-    // separately
+  for (var i = 0; i < iterations; i++) {
     var tempRealComponent =
       realComponentOfResult * realComponentOfResult -
       imaginaryComponentOfResult * imaginaryComponentOfResult +
@@ -23,22 +25,24 @@ function checkIfBelongsToMandelbrotSet(x, y) {
     imaginaryComponentOfResult = tempImaginaryComponent;
   }
 
-  if (realComponentOfResult * imaginaryComponentOfResult < 5) return true; // In the Mandelbrot set
+  if (realComponentOfResult * imaginaryComponentOfResult < 5) return true;
 
-  return false; // Not in the set
+  return false;
 }
 
-var magnificationFactor = 200;
-var panX = 2;
-var panY = 1.5;
-for (x = 0; x < 680; x++) {
-  for (y = 0; y < 680; y++) {
-    var belongsToSet = checkIfBelongsToMandelbrotSet(
-      x / magnificationFactor - panX,
-      y / magnificationFactor - panY
-    );
-    if (belongsToSet) {
-      frac.fillRect(x, y, 1, 1); // Draw a black pixel
+function render() {
+  frac.clearRect(0, 0, canvas.width, canvas.height);
+  for (x = 0; x < canvas.width; x++) {
+    for (y = 0; y < canvas.height; y++) {
+      var belongsToSet = checkIfBelongsToMandelbrotSet(
+        (x - canvas.width / panX) / magnificationFactor,
+        (y - canvas.height / panY) / magnificationFactor
+      );
+      if (belongsToSet) {
+        frac.fillRect(x, y, 1, 1);
+      }
     }
   }
 }
+
+render();
