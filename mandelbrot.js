@@ -1,42 +1,40 @@
 let canvas = document.getElementById("frac");
+let overlay = document.getElementById("overlay");
 canvas.width = 600;
 canvas.height = 600;
+overlay.width = 600;
+overlay.height = 600;
 frac = canvas.getContext("2d");
+selection = overlay.getContext("2d");
 
 let iterations = 200;
-var magnificationFactor = 280;
-let panX = 1.45;
-let panY = 2;
+let magnificationFactor = 250;
 
-function checkIfBelongsToMandelbrotSet(x, y) {
-  var realComponentOfResult = x;
-  var imaginaryComponentOfResult = y;
+function mandelbrotCheck(x, y) {
+  let real = x;
+  let imag = y;
 
-  for (var i = 0; i < iterations; i++) {
-    var tempRealComponent =
-      realComponentOfResult * realComponentOfResult -
-      imaginaryComponentOfResult * imaginaryComponentOfResult +
-      x;
+  for (let i = 0; i < iterations; i++) {
+    tempX = real * real - imag * imag + x;
+    tempY = 2 * real * imag + y;
 
-    var tempImaginaryComponent =
-      2 * realComponentOfResult * imaginaryComponentOfResult + y;
+    real = tempX;
+    imag = tempY;
 
-    realComponentOfResult = tempRealComponent;
-    imaginaryComponentOfResult = tempImaginaryComponent;
+    if (tempX < -2 || tempX > 2 || tempY < -2 || tempY > 2) {
+      return false;
+    }
   }
-
-  if (realComponentOfResult * imaginaryComponentOfResult < 5) return true;
-
-  return false;
+  return true;
 }
 
 function render() {
   frac.clearRect(0, 0, canvas.width, canvas.height);
   for (x = 0; x < canvas.width; x++) {
     for (y = 0; y < canvas.height; y++) {
-      var belongsToSet = checkIfBelongsToMandelbrotSet(
-        (x - canvas.width / panX) / magnificationFactor,
-        (y - canvas.height / panY) / magnificationFactor
+      let belongsToSet = mandelbrotCheck(
+        (x - 400) / magnificationFactor,
+        (y - 300) / magnificationFactor
       );
       if (belongsToSet) {
         frac.fillRect(x, y, 1, 1);
@@ -46,3 +44,43 @@ function render() {
 }
 
 render();
+
+overlay.addEventListener("click", canvasClick);
+overlay.addEventListener("mousemove", drawSelection);
+
+let drawingBox = false;
+let x1, y1, x2, y2 //, oldX, oldY, oldWidth, oldHeight;
+
+function canvasClick(event) {
+  let rect = overlay.getBoundingClientRect();
+  let x = event.clientX - rect.left;
+  let y = event.clientY - rect.top;
+  if (drawingBox == false) {
+    x1 = x;
+    y1 = y;
+    console.log("x1: " + x1 + ", y1: " + y1);
+    drawingBox = true;
+  } else {
+    x2 = x;
+    y2 = y;
+    console.log("x2: " + x2 + ", y2: " + y2);
+    drawingBox = false;
+  }
+}
+
+function drawSelection(event) {
+  if (drawingBox == true) {
+      selection.clearRect(0, 0, overlay.width, overlay.height);
+      let rect = overlay.getBoundingClientRect();
+      let a = event.clientX - rect.left;
+      let b = event.clientY - rect.top;
+      selection.fillStyle = "rgba(0, 0, 255, 0.3)";
+      let w = a - x1;
+      let h = b - y1;
+
+    // constrain to square!!
+
+      selection.fillRect(x1, y1, w, h);
+    }
+  }
+
