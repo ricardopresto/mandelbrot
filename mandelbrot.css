@@ -20,3 +20,9 @@
 canvas {
   position: absolute;
 }
+
+#progress {
+  background-color: blue;
+  width: 20px;
+  height: 0px;
+}
