@@ -9,10 +9,12 @@ selection = overlay.getContext("2d");
 
 let iterations = 200;
 let magnificationFactor = 250;
+let xOffset = 400;
+let yOffset = 300;
 
 function mandelbrotCheck(x, y) {
-  let real = Math.fround(x);
-  let imag = Math.fround(y);
+  let real = x;
+  let imag = y;
 
   for (let i = 0; i < iterations; i++) {
     tempX = real * real - imag * imag + x;
@@ -35,8 +37,46 @@ function render() {
     if (x < canvas.width) {
       for (let y = 0; y < canvas.height; y++) {
         let belongsToSet = mandelbrotCheck(
-          (x - 400) / magnificationFactor,
-          (y - 300) / magnificationFactor
+          (x - xOffset) / magnificationFactor,
+          (y - yOffset) / magnificationFactor
+        );
+        if (belongsToSet) {
+          frac.fillRect(x, y, 1, 1);
+        }
+      }
+    }
+    x++;
+  }, 0);
+}
+
+function renderSelection() {
+  let selStepX = selWidth / canvas.width;
+  let selStepY = selHeight / canvas.height;
+  console.log(
+    "x1:",
+    x1,
+    "y1:",
+    y1,
+    "x2:",
+    x2,
+    "y2:",
+    y2,
+    "selWidth:",
+    selWidth,
+    "selHeight:",
+    selHeight
+  );
+
+  frac.clearRect(0, 0, canvas.width, canvas.height);
+  selection.clearRect(0, 0, overlay.width, overlay.height);
+
+  let x = 0;
+  setInterval(function() {
+    if (x < canvas.width) {
+      for (let y = 0; y < canvas.height; y++) {
+        let belongsToSet = mandelbrotCheck(
+          (x1 + x * selStepX - 400) / magnificationFactor,
+          (y1 + y * selStepY - 300) / magnificationFactor
         );
         if (belongsToSet) {
           frac.fillRect(x, y, 1, 1);
@@ -53,12 +93,13 @@ overlay.addEventListener("click", canvasClick);
 overlay.addEventListener("mousemove", drawSelection);
 
 let drawingBox = false;
-let x1, y1, x2, y2, selX, selY, selWidth, selHeight;
+let x1, y1, x2, y2, selWidth, selHeight;
 
 function canvasClick(event) {
   let rect = overlay.getBoundingClientRect();
-  let x = event.clientX - rect.left;
-  let y = event.clientY - rect.top;
+  let x = event.clientX - rect.left - 2;
+  let y = event.clientY - rect.top - 2;
+  console.log(x, y);
   if (drawingBox == false) {
     x1 = x;
     y1 = y;
@@ -67,7 +108,6 @@ function canvasClick(event) {
     x2 = x;
     y2 = y;
     drawingBox = false;
-    console.log(selX, selY, selWidth, selHeight);
   }
 }
 
@@ -75,22 +115,17 @@ function drawSelection(event) {
   if (drawingBox == true) {
     selection.clearRect(0, 0, overlay.width, overlay.height);
     let rect = overlay.getBoundingClientRect();
-    let a = event.clientX - rect.left;
-    let b = event.clientY - rect.top;
+    let mouseX = event.clientX - rect.left;
+    let mouseY = event.clientY - rect.top;
     selection.fillStyle = "rgba(0, 0, 255, 0.3)";
-    let w = a - x1;
-    let h = b - y1;
+    selWidth = mouseX - x1;
+    selHeight = mouseY - y1;
 
-    if (w < 0 || h < 0) return;
-    if (w > h > 0) h = w;
-    if (h > w > 0) w = h;
+    if (selWidth < 0 || selHeight < 0) return;
+    if (selWidth > selHeight) selHeight = selWidth;
+    if (selHeight > selWidth) selWidth = selHeight;
 
-    selection.fillRect(x1, y1, w, h);
-
-    selX = x1;
-    selY = y1;
-    selWidth = w;
-    selHeight = h;
+    selection.fillRect(x1, y1, selWidth, selHeight);
   }
 }
 
@@ -98,30 +133,3 @@ let renderSel = document.getElementById("renderSel");
 let progress = document.getElementById("progress");
 
 renderSel.addEventListener("click", renderSelection);
-
-function renderSelection() {
-  let selStepX = selWidth / canvas.width;
-  let selStepY = selHeight / canvas.height;
-
-  frac.clearRect(0, 0, canvas.width, canvas.height);
-  selection.clearRect(0, 0, overlay.width, overlay.height);
-
-  for (x = 0; x < canvas.width; x++) {
-    let x = 0;
-    setInterval(function() {
-      if (x < canvas.width) {
-        for (let y = 0; y < canvas.height; y++) {
-          let belongsToSet = mandelbrotCheck(
-            (selX + x * selStepX - 400) / magnificationFactor,
-            (selY + y * selStepY - 300) / magnificationFactor
-          );
-          if (belongsToSet) {
-            frac.fillRect(x, y, 1, 1);
-          }
-        }
-        progress.style.height = `${x / 2}px`;
-        x++;
-      }
-    }, 0);
-  }
-}
