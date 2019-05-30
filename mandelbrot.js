@@ -7,10 +7,21 @@ overlay.height = 600;
 frac = canvas.getContext("2d");
 selection = overlay.getContext("2d");
 
-let iterations = 200;
-let magnificationFactor = 250;
-let xOffset = 400;
-let yOffset = 300;
+let iterations = 300;
+let selWidth = canvas.width;
+let selHeight = canvas.height;
+let x1 = 0;
+let y1 = 0;
+let count = 0;
+
+let renderList = [
+  {
+    selectionWidth: 2.4,
+    selectionHeight: 2.4,
+    selectionX: -1.6,
+    selectionY: -1.2
+  }
+];
 
 function mandelbrotCheck(x, y) {
   let real = x;
@@ -30,53 +41,36 @@ function mandelbrotCheck(x, y) {
   return true;
 }
 
-function render() {
-  frac.clearRect(0, 0, canvas.width, canvas.height);
-  let x = 0;
-  setInterval(function() {
-    if (x < canvas.width) {
-      for (let y = 0; y < canvas.height; y++) {
-        let belongsToSet = mandelbrotCheck(
-          (x - xOffset) / magnificationFactor,
-          (y - yOffset) / magnificationFactor
-        );
-        if (belongsToSet) {
-          frac.fillRect(x, y, 1, 1);
-        }
-      }
-    }
-    x++;
-  }, 0);
+function updateRenderList() {
+  let newRender = {
+    selectionWidth: selWidth * (renderList[count].selectionWidth / 600),
+    selectionHeight: selHeight * (renderList[count].selectionHeight / 600),
+    selectionX:
+      renderList[count].selectionX +
+      x1 * (renderList[count].selectionWidth / 600),
+    selectionY:
+      renderList[count].selectionY +
+      y1 * (renderList[count].selectionHeight / 600)
+  };
+  renderList.push(newRender);
+  count++;
+  renderSelection();
 }
 
 function renderSelection() {
-  let selStepX = selWidth / canvas.width;
-  let selStepY = selHeight / canvas.height;
-  console.log(
-    "x1:",
-    x1,
-    "y1:",
-    y1,
-    "x2:",
-    x2,
-    "y2:",
-    y2,
-    "selWidth:",
-    selWidth,
-    "selHeight:",
-    selHeight
-  );
-
+  console.log(renderList[count]);
   frac.clearRect(0, 0, canvas.width, canvas.height);
   selection.clearRect(0, 0, overlay.width, overlay.height);
 
   let x = 0;
   setInterval(function() {
-    if (x < canvas.width) {
-      for (let y = 0; y < canvas.height; y++) {
+    if (x < 600) {
+      for (let y = 0; y < 600; y++) {
         let belongsToSet = mandelbrotCheck(
-          (x1 + x * selStepX - 400) / magnificationFactor,
-          (y1 + y * selStepY - 300) / magnificationFactor
+          renderList[count].selectionX +
+            x * (renderList[count].selectionWidth / 600),
+          renderList[count].selectionY +
+            y * (renderList[count].selectionHeight / 600)
         );
         if (belongsToSet) {
           frac.fillRect(x, y, 1, 1);
@@ -87,19 +81,24 @@ function renderSelection() {
   }, 0);
 }
 
-render();
+function goBack() {
+  count = count - 1;
+  renderList.pop();
+  renderSelection();
+}
+
+renderSelection();
 
 overlay.addEventListener("click", canvasClick);
 overlay.addEventListener("mousemove", drawSelection);
 
 let drawingBox = false;
-let x1, y1, x2, y2, selWidth, selHeight;
+let x2, y2;
 
 function canvasClick(event) {
   let rect = overlay.getBoundingClientRect();
   let x = event.clientX - rect.left - 2;
   let y = event.clientY - rect.top - 2;
-  console.log(x, y);
   if (drawingBox == false) {
     x1 = x;
     y1 = y;
@@ -130,6 +129,7 @@ function drawSelection(event) {
 }
 
 let renderSel = document.getElementById("renderSel");
-let progress = document.getElementById("progress");
+let backBtn = document.getElementById("back");
 
-renderSel.addEventListener("click", renderSelection);
+renderSel.addEventListener("click", updateRenderList);
+backBtn.addEventListener("click", goBack);

@@ -20,3 +20,9 @@
 canvas {
   position: absolute;
 }
+
+button {
+  display: block;
+  padding: 10px;
+  margin: 10px;
+}
