@@ -43,14 +43,16 @@ function mandelbrotCheck(x, y) {
 
 function updateRenderList() {
   let newRender = {
-    selectionWidth: selWidth * (renderList[count].selectionWidth / 600),
-    selectionHeight: selHeight * (renderList[count].selectionHeight / 600),
+    selectionWidth:
+      selWidth * (renderList[count].selectionWidth / canvas.width),
+    selectionHeight:
+      selHeight * (renderList[count].selectionHeight / canvas.height),
     selectionX:
       renderList[count].selectionX +
-      x1 * (renderList[count].selectionWidth / 600),
+      x1 * (renderList[count].selectionWidth / canvas.width),
     selectionY:
       renderList[count].selectionY +
-      y1 * (renderList[count].selectionHeight / 600)
+      y1 * (renderList[count].selectionHeight / canvas.height)
   };
   renderList.push(newRender);
   count++;
@@ -64,13 +66,13 @@ function renderSelection() {
 
   let x = 0;
   setInterval(function() {
-    if (x < 600) {
-      for (let y = 0; y < 600; y++) {
+    if (x < canvas.width) {
+      for (let y = 0; y < canvas.height; y++) {
         let belongsToSet = mandelbrotCheck(
           renderList[count].selectionX +
-            x * (renderList[count].selectionWidth / 600),
+            x * (renderList[count].selectionWidth / canvas.width),
           renderList[count].selectionY +
-            y * (renderList[count].selectionHeight / 600)
+            y * (renderList[count].selectionHeight / canvas.height)
         );
         if (belongsToSet) {
           frac.fillRect(x, y, 1, 1);
