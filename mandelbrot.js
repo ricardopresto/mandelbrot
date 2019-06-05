@@ -58,13 +58,16 @@ function mandelbrotCheck(x, y) {
 function updateRenderList() {
   if (renderUpdate) {
     if (squareSizeY < 0) {
-      y1 = y1 - squareSizeY;
       squareSizeY = Math.abs(squareSizeY);
+      y1 = y1 - squareSizeY;
     }
     if (squareSizeX < 0) {
-      x1 = x1 - squareSizeX;
       squareSizeX = Math.abs(squareSizeX);
+      x1 = x1 - squareSizeX;
     }
+
+    selection.fillStyle = "rgba(255, 0, 0, 1)";
+    selection.fillRect(x1, y1, squareSizeX, squareSizeY);
 
     let newRender = {
       selectionWidth: squareSizeX * (renderList[count].selectionWidth / size),
