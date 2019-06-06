@@ -1,9 +1,21 @@
 #container {
-  width: 100%;
-  height: 100%;
   display: flex;
-  flex-direction: column;
-  position: relative;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+
+#canvasContainer {
+  display: block;
+  width: 600px;
+  height: 600px;
+}
+
+#controls {
+  display: flex;
+  flex-flow: column;
+  padding: 20px;
+  height: 600px;
+  justify-content: space-evenly;
 }
 
 #frac {

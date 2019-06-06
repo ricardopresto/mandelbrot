@@ -1,20 +1,37 @@
 let size = 600;
 
-let canvas = document.getElementById("frac");
-let overlay = document.getElementById("overlay");
-canvas.width = size;
-canvas.height = size;
-overlay.width = size;
-overlay.height = size;
-frac = canvas.getContext("2d");
-selection = overlay.getContext("2d");
+const canvas = document.getElementById("frac");
+const overlay = document.getElementById("overlay");
+const controls = document.getElementById("controls");
+canvas.width = canvas.height = overlay.width = overlay.height = size;
+const frac = canvas.getContext("2d");
+const selection = overlay.getContext("2d");
 
-let renderSel = document.getElementById("renderSel");
-let backBtn = document.getElementById("back");
-let iterDisplay = document.getElementById("iterDisplay");
-let iterSlider = document.getElementById("iterSlider");
-let fringeSlider = document.getElementById("fringeSlider");
-let fringeDisplay = document.getElementById("fringeDisplay");
+const renderSel = document.getElementById("renderSel");
+const backBtn = document.getElementById("back");
+const iterDisplay = document.getElementById("iterDisplay");
+const iterSlider = document.getElementById("iterSlider");
+const fringeSlider = document.getElementById("fringeSlider");
+const fringeDisplay = document.getElementById("fringeDisplay");
+
+renderSel.addEventListener("click", updateRenderList);
+backBtn.addEventListener("click", goBack);
+iterSlider.addEventListener("change", iterUpdate);
+
+backBtn.disabled = true;
+
+let r = window.matchMedia("(max-width: 855px)");
+r.addListener(rearrange);
+
+function rearrange(r) {
+  if (r.matches) {
+    controls.style.flexFlow = "row";
+    controls.style.width = "600px";
+  } else {
+    controls.style.flexFlow = "column";
+    controls.style.width = "200px";
+  }
+}
 
 let iterations = 600;
 let selWidth = canvas.width;
@@ -22,11 +39,12 @@ let selHeight = canvas.height;
 let x1 = 0;
 let y1 = 0;
 let boxPositionX, boxPositionY;
+let squareSizeX, squareSizeY;
 let count = 0;
 let renderUpdate = false;
 let drawingBox = false;
 let dragging = false;
-let dontclick = false;
+let finishDrag = false;
 
 let renderList = [
   {
@@ -84,10 +102,10 @@ function updateRenderList() {
     backBtn.disabled = false;
   }
   renderUpdate = false;
-  renderSelection();
+  render();
 }
 
-function renderSelection() {
+function render() {
   frac.clearRect(0, 0, canvas.width, canvas.height);
   selection.clearRect(0, 0, overlay.width, overlay.height);
 
@@ -118,10 +136,8 @@ function goBack() {
   count = count - 1;
   if (count == 0) backBtn.disabled = true;
   renderList.pop();
-  renderSelection();
+  render();
 }
-
-renderSelection();
 
 overlay.addEventListener("click", canvasClick);
 overlay.addEventListener("mousemove", mouseMove);
@@ -132,8 +148,8 @@ function canvasClick(e) {
   let rect = overlay.getBoundingClientRect();
   let x = e.clientX - rect.left - 2;
   let y = e.clientY - rect.top - 2;
-  if (dontclick == true) {
-    dontclick = false;
+  if (finishDrag == true) {
+    finishDrag = false;
     return;
   }
   if (drawingBox == false) {
@@ -168,7 +184,7 @@ function mouseDown(e) {
 
 function mouseUp() {
   if (dragging == true) {
-    dontclick = true;
+    finishDrag = true;
     dragging = false;
   }
 }
@@ -217,17 +233,7 @@ function drawSelection(e) {
 }
 
 function iterUpdate() {
-  iterDisplay.textContent = `Iterations: ${iterSlider.value}`;
   iterations = iterSlider.value;
 }
 
-function fringeUpdate() {
-  fringeDisplay.textContent = `Fringe: ${fringeSlider.value}%`;
-}
-
-backBtn.disabled = true;
-
-renderSel.addEventListener("click", updateRenderList);
-backBtn.addEventListener("click", goBack);
-iterSlider.addEventListener("change", iterUpdate);
-fringeSlider.addEventListener("change", fringeUpdate);
+render();

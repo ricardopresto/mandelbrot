@@ -4,17 +4,25 @@
   </head>
   <body>
     <div id="container">
-      <canvas id="frac"></canvas>
-      <canvas id="overlay"></canvas>
+      <div id="canvasContainer">
+          <canvas id="frac"></canvas>
+          <canvas id="overlay"></canvas>
+      </div>
+      <div id="controls">
+        <div id="buttons">
+          <button id="renderSel">Render</button>
+          <button id="back">Back</button>
+        </div>
+        <div id="sliders">
+          <input type="range" name="iterSlider" id="iterSlider" class="slider" min="300" max="2000" 
+          value="600" onmousemove="document.getElementById('iterDisplay').innerHTML=this.value;">
+          <p><span>Iterations: </span><span id="iterDisplay">600</span></p>
+          <input type="range" name="fringeSlider" id="fringeSlider" class="slider" min="0" max="100" 
+          value="80" onmousemove="document.getElementById('fringeDisplay').innerHTML=this.value;">
+          <p><span>Fringe: </span><span id="fringeDisplay">80</span><span>%</span></p>
+        </div>
+      </div>
     </div>
-    <button id="renderSel">Render</button>
-        <button id="back">Back</button>
-        <input type="range" name="iterSlider" id="iterSlider" class="slider" min="300" max="2000" value="500">
-        <p id="iterDisplay">Iterations: 500</p>
-        <br>
-        <input type="range" name="fringeSlider" id="fringeSlider" class="slider" min="0" max="100" value="80">
-        <p id="fringeDisplay">Fringe: 80%</p>
-        <script src="mandelbrot.js"></script>
-
+    <script src="mandelbrot.js"></script>
   </body>
 </html>
