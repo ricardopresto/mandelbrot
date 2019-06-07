@@ -1,3 +1,7 @@
+/* div {
+  border: 1px solid red;
+} */
+
 #container {
   display: flex;
   flex-flow: row wrap;
@@ -5,27 +9,45 @@
 }
 
 #canvasContainer {
-  display: block;
-  width: 600px;
-  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #controls {
   display: flex;
   flex-flow: column;
-  padding: 20px;
+  width: min-content;
   height: 600px;
   justify-content: space-evenly;
 }
 
-#frac {
-  border: 1px solid black;
-  align-self: center;
+#buttons {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+button {
+  display: block;
+  width: 40%;
+  padding: 1em;
+  margin: 0.5em;
+}
+
+#renderBtn {
+  width: 100%;
+}
+
+#sliders {
+  display: flex;
+  flex-flow: column wrap;
+  width: min-content;
 }
 
 #overlay {
-  border: 1px solid red;
-  align-self: center;
+  border: 1px solid black;
   z-index: 1;
 }
 
@@ -33,16 +55,10 @@ canvas {
   position: absolute;
 }
 
-button {
-  display: block;
-  padding: 10px;
-  margin: 10px;
-}
-
 .slider {
   -webkit-appearance: none;
-  width: 180px;
-  height: 15px;
+  width: 200px;
+  height: 10px;
   background: #d3d3d3;
   outline: none;
   opacity: 0.7;
@@ -58,14 +74,14 @@ button {
   -webkit-appearance: none;
   appearance: none;
   width: 15px;
-  height: 15px;
+  height: 10px;
   background: darkslategray;
   cursor: pointer;
 }
 
 .slider::-moz-range-thumb {
   width: 15px;
-  height: 15px;
+  height: 10px;
   background: darkslategray;
   cursor: pointer;
 }

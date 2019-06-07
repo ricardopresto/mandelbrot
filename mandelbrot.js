@@ -1,24 +1,45 @@
-let size = 600;
-
 const canvas = document.getElementById("frac");
 const overlay = document.getElementById("overlay");
 const controls = document.getElementById("controls");
-canvas.width = canvas.height = overlay.width = overlay.height = size;
 const frac = canvas.getContext("2d");
 const selection = overlay.getContext("2d");
 
-const renderSel = document.getElementById("renderSel");
-const backBtn = document.getElementById("back");
+const renderBtn = document.getElementById("renderBtn");
+const backBtn = document.getElementById("backBtn");
+const resetBtn = document.getElementById("resetBtn");
 const iterDisplay = document.getElementById("iterDisplay");
 const iterSlider = document.getElementById("iterSlider");
-const fringeSlider = document.getElementById("fringeSlider");
-const fringeDisplay = document.getElementById("fringeDisplay");
+const fringeSlider1 = document.getElementById("fringeSlider1");
+const fringeColor1 = document.getElementById("fringeColor1");
+const fringeDisplay1 = document.getElementById("fringeDisplay1");
+const fringeSlider2 = document.getElementById("fringeSlider2");
+const fringeColor2 = document.getElementById("fringeColor2");
+const fringeDisplay2 = document.getElementById("fringeDisplay2");
+const fringeSlider3 = document.getElementById("fringeSlider3");
+const fringeColor3 = document.getElementById("fringeColor3");
+const fringeDisplay3 = document.getElementById("fringeDisplay3");
+const canvasContainer = document.getElementById("canvasContainer");
 
-renderSel.addEventListener("click", updateRenderList);
+renderBtn.addEventListener("click", updateRenderList);
 backBtn.addEventListener("click", goBack);
+resetBtn.addEventListener("click", reset);
 iterSlider.addEventListener("change", iterUpdate);
 
 backBtn.disabled = true;
+
+overlay.addEventListener("click", canvasClick);
+overlay.addEventListener("mousemove", mouseMove);
+overlay.addEventListener("mousedown", mouseDown);
+overlay.addEventListener("mouseup", mouseUp);
+
+if (window.innerWidth > window.innerHeight) {
+  size = window.innerHeight * 0.8;
+} else {
+  size = window.innerWidth * 0.8;
+}
+
+canvas.width = canvas.height = overlay.width = overlay.height = size;
+canvasContainer.style.height = canvasContainer.style.width = `${size * 1.1}px`;
 
 let r = window.matchMedia("(max-width: 855px)");
 r.addListener(rearrange);
@@ -38,9 +59,9 @@ let selWidth = canvas.width;
 let selHeight = canvas.height;
 let x1 = 0;
 let y1 = 0;
+let count = 0;
 let boxPositionX, boxPositionY;
 let squareSizeX, squareSizeY;
-let count = 0;
 let renderUpdate = false;
 let drawingBox = false;
 let dragging = false;
@@ -122,8 +143,14 @@ function render() {
         if (belongsToSet == iterations) {
           frac.fillStyle = "#000";
           frac.fillRect(x, y, 1, 1);
-        } else if (belongsToSet > (iterations / 100) * fringeSlider.value) {
-          frac.fillStyle = "#a647e5";
+        } else if (belongsToSet > (iterations / 100) * fringeSlider1.value) {
+          frac.fillStyle = `${fringeColor1.value}`;
+          frac.fillRect(x, y, 1, 1);
+        } else if (belongsToSet > (iterations / 100) * fringeSlider2.value) {
+          frac.fillStyle = `${fringeColor2.value}`;
+          frac.fillRect(x, y, 1, 1);
+        } else if (belongsToSet > (iterations / 100) * fringeSlider3.value) {
+          frac.fillStyle = `${fringeColor3.value}`;
           frac.fillRect(x, y, 1, 1);
         }
       }
@@ -139,10 +166,22 @@ function goBack() {
   render();
 }
 
-overlay.addEventListener("click", canvasClick);
-overlay.addEventListener("mousemove", mouseMove);
-overlay.addEventListener("mousedown", mouseDown);
-overlay.addEventListener("mouseup", mouseUp);
+function reset() {
+  renderList = [
+    {
+      selectionWidth: 2.4,
+      selectionHeight: 2.4,
+      selectionX: -1.6,
+      selectionY: -1.2
+    }
+  ];
+  selWidth = canvas.width;
+  selHeight = canvas.height;
+  x1 = 0;
+  y1 = 0;
+  count = 0;
+  render();
+}
 
 function canvasClick(e) {
   let rect = overlay.getBoundingClientRect();
