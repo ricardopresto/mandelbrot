@@ -33,25 +33,37 @@ overlay.addEventListener("mousedown", mouseDown);
 overlay.addEventListener("mouseup", mouseUp);
 
 if (window.innerWidth > window.innerHeight) {
-  size = window.innerHeight * 0.8;
+  setLandscape();
 } else {
-  size = window.innerWidth * 0.8;
+  setPortait();
 }
 
-canvas.width = canvas.height = overlay.width = overlay.height = size;
-canvasContainer.style.height = canvasContainer.style.width = `${size * 1.1}px`;
-
-let r = window.matchMedia("(max-width: 855px)");
+let r = window.matchMedia("(orientation: portrait)");
 r.addListener(rearrange);
 
 function rearrange(r) {
   if (r.matches) {
-    controls.style.flexFlow = "row";
-    controls.style.width = "600px";
+    setPortait();
   } else {
-    controls.style.flexFlow = "column";
-    controls.style.width = "200px";
+    setLandscape();
   }
+}
+
+function setPortait() {
+  size = window.innerWidth * 0.9;
+  canvas.width = canvas.height = overlay.width = overlay.height = size;
+  canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
+  controls.style.flexFlow = "row";
+  controls.style.width = canvasContainer.style.width;
+}
+
+function setLandscape() {
+  size = window.innerHeight * 0.9;
+  canvas.width = canvas.height = overlay.width = overlay.height = size;
+  canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
+  controls.style.flexFlow = "column";
+  controls.style.height = canvasContainer.style.height;
+  controls.style.width = iterSlider.style.width;
 }
 
 let iterations = 600;
