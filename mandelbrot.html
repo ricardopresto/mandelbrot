@@ -11,25 +11,39 @@
       <div id="controls">
         <div id="buttons">
           <button id="renderBtn">Render</button>
-          <button id="backBtn">Back</button>
-          <button id="resetBtn">Reset</button>
+          <div id="smallButtons">
+            <button id="backBtn">Back</button>
+            <button id="resetBtn">Reset</button>
+          </div>
         </div>
         <div id="sliders">
-          <input type="range" name="iterSlider" id="iterSlider" class="slider" min="300" max="3000" 
-          value="600" onmousemove="document.getElementById('iterDisplay').innerHTML=this.value;">
-          <p><span>Iterations: </span><span id="iterDisplay">600</span></p>
+          <p class="sliderBlock">
+            <input type="range" name="iterSlider" id="iterSlider" class="slider" min="300" max="3000" 
+            value="600" onmousemove="document.getElementById('iterDisplay').innerHTML=this.value;">
+            <span>Iterations: </span><span id="iterDisplay">600</span>
+          </p>
+          <p class="sliderBlock">
           <input type="range" name="fringeSlider1" id="fringeSlider1" class="slider" min="0" max="100" 
           value="80" onmousemove="document.getElementById('fringeDisplay1').innerHTML=this.value;">
-          <input type="color" name="fringeColor1" id="fringeColor1" value="#ffffff"/>
-          <p><span>Fringe: </span><span id="fringeDisplay1">80</span><span>%</span></p>
+          <span>
+            <input type="color" name="fringeColor1" id="fringeColor1" value="#ffffff"/>
+            <span>Fringe: </span><span id="fringeDisplay1">80</span><span>%</span>
+          </p>
+          <p class="sliderBlock">
           <input type="range" name="fringeSlider2" id="fringeSlider2" class="slider" min="0" max="100" 
           value="80" onmousemove="document.getElementById('fringeDisplay2').innerHTML=this.value;">
-          <input type="color" name="fringeColor2" id="fringeColor2" value="#ffffff"/>
-          <p><span>Fringe: </span><span id="fringeDisplay2">80</span><span>%</span></p>
+          <span>
+              <input type="color" name="fringeColor2" id="fringeColor2" value="#ffffff"/>
+              <span>Fringe: </span><span id="fringeDisplay2">80</span><span>%</span>
+          </p>
+         <p class="sliderBlock">
           <input type="range" name="fringeSlider3" id="fringeSlider3" class="slider" min="0" max="100" 
           value="80" onmousemove="document.getElementById('fringeDisplay3').innerHTML=this.value;">
-          <input type="color" name="fringeColor3" id="fringeColor3" value="#ffffff"/>
-          <p><span>Fringe: </span><span id="fringeDisplay3">80</span><span>%</span></p>
+          <span>
+              <input type="color" name="fringeColor3" id="fringeColor3" value="#ffffff"/>
+              <span>Fringe: </span><span id="fringeDisplay3">80</span><span>%</span>
+          </p> 
+
         </div>
       </div>
     </div>

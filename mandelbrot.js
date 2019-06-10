@@ -52,7 +52,7 @@ window.onresize = () => {
   //let controlsWidth = parseFloat(window.getComputedStyle(controls).width);
   //let containerHeight = parseFloat(window.getComputedStyle(container).height);
 
-  if (window.innerWidth < window.innerHeight + 200) {
+  if (window.innerWidth < window.innerHeight + 230) {
     setPortrait();
   } else {
     setLandscape();
