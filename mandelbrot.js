@@ -55,10 +55,11 @@ function setPortrait() {
   size = window.innerWidth * 0.9;
   canvas.width = canvas.height = overlay.width = overlay.height = size;
   canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
+  canvasContainer.style.marginTop = "30px";
   controls.style.flexFlow = "row";
   controls.style.width = canvasContainer.style.width;
   buttons.style.width = "40%";
-  buttons.style.height = "120px";
+  buttons.style.height = "200px";
 }
 
 function setLandscape() {
@@ -286,6 +287,7 @@ function dragBox(e) {
 }
 
 function touchDrag(e) {
+  e.preventDefault();
   if (e.targetTouches.length == 1) {
     selection.clearRect(0, 0, overlay.width, overlay.height);
     let touch = e.targetTouches[0];
