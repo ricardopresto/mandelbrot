@@ -1,24 +1,24 @@
-const canvas = document.getElementById("frac");
-const overlay = document.getElementById("overlay");
-const controls = document.getElementById("controls");
-const frac = canvas.getContext("2d");
-const selection = overlay.getContext("2d");
+const canvas = document.getElementById("frac"),
+  overlay = document.getElementById("overlay"),
+  frac = canvas.getContext("2d"),
+  selection = overlay.getContext("2d");
 
-const renderBtn = document.getElementById("renderBtn");
-const backBtn = document.getElementById("backBtn");
-const resetBtn = document.getElementById("resetBtn");
-const iterDisplay = document.getElementById("iterDisplay");
-const iterSlider = document.getElementById("iterSlider");
-const fringeSlider1 = document.getElementById("fringeSlider1");
-const fringeColor1 = document.getElementById("fringeColor1");
-const fringeDisplay1 = document.getElementById("fringeDisplay1");
-const fringeSlider2 = document.getElementById("fringeSlider2");
-const fringeColor2 = document.getElementById("fringeColor2");
-const fringeDisplay2 = document.getElementById("fringeDisplay2");
-const fringeSlider3 = document.getElementById("fringeSlider3");
-const fringeColor3 = document.getElementById("fringeColor3");
-const fringeDisplay3 = document.getElementById("fringeDisplay3");
-const canvasContainer = document.getElementById("canvasContainer");
+const renderBtn = document.getElementById("renderBtn"),
+  backBtn = document.getElementById("backBtn"),
+  resetBtn = document.getElementById("resetBtn"),
+  iterDisplay = document.getElementById("iterDisplay"),
+  iterSlider = document.getElementById("iterSlider"),
+  fringeSlider1 = document.getElementById("fringeSlider1"),
+  fringeColor1 = document.getElementById("fringeColor1"),
+  fringeDisplay1 = document.getElementById("fringeDisplay1"),
+  fringeSlider2 = document.getElementById("fringeSlider2"),
+  fringeColor2 = document.getElementById("fringeColor2"),
+  fringeDisplay2 = document.getElementById("fringeDisplay2"),
+  fringeSlider3 = document.getElementById("fringeSlider3"),
+  fringeColor3 = document.getElementById("fringeColor3"),
+  fringeDisplay3 = document.getElementById("fringeDisplay3"),
+  canvasContainer = document.getElementById("canvasContainer"),
+  controls = document.getElementById("controls");
 
 renderBtn.addEventListener("click", updateRenderList);
 backBtn.addEventListener("click", goBack);
