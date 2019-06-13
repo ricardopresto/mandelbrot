@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const canvas = document.getElementById("frac"),
   overlay = document.getElementById("overlay"),
   frac = canvas.getContext("2d"),
@@ -20,32 +19,6 @@ const renderBtn = document.getElementById("renderBtn"),
   fringeDisplay3 = document.getElementById("fringeDisplay3"),
   canvasContainer = document.getElementById("canvasContainer"),
   controls = document.getElementById("controls");
-=======
-const canvas = document.getElementById("frac");
-const overlay = document.getElementById("overlay");
-const controls = document.getElementById("controls");
-const sliders = document.getElementById("sliders");
-const buttons = document.getElementById("buttons");
-const canvasContainer = document.getElementById("canvasContainer");
-const container = document.getElementById("container");
-const frac = canvas.getContext("2d");
-const selection = overlay.getContext("2d");
-
-const renderBtn = document.getElementById("renderBtn");
-const backBtn = document.getElementById("backBtn");
-const resetBtn = document.getElementById("resetBtn");
-const iterDisplay = document.getElementById("iterDisplay");
-const iterSlider = document.getElementById("iterSlider");
-const fringeSlider1 = document.getElementById("fringeSlider1");
-const fringeColor1 = document.getElementById("fringeColor1");
-const fringeDisplay1 = document.getElementById("fringeDisplay1");
-const fringeSlider2 = document.getElementById("fringeSlider2");
-const fringeColor2 = document.getElementById("fringeColor2");
-const fringeDisplay2 = document.getElementById("fringeDisplay2");
-const fringeSlider3 = document.getElementById("fringeSlider3");
-const fringeColor3 = document.getElementById("fringeColor3");
-const fringeDisplay3 = document.getElementById("fringeDisplay3");
->>>>>>> 6b2523a92719a2ef8b75ffeff156270be2579954
 
 renderBtn.addEventListener("click", updateRenderList);
 backBtn.addEventListener("click", goBack);
@@ -58,6 +31,9 @@ overlay.addEventListener("click", canvasClick);
 overlay.addEventListener("mousemove", mouseMove);
 overlay.addEventListener("mousedown", mouseDown);
 overlay.addEventListener("mouseup", mouseUp);
+overlay.addEventListener("touchmove", touchMove);
+overlay.addEventListener("touchstart", touchStart);
+overlay.addEventListener("touchend", touchEnd);
 
 let landscape;
 
@@ -67,20 +43,11 @@ let orientation = window.matchMedia("(orientation: portrait)");
 orientation.addListener(rearrange);
 
 function rearrange(orientation) {
-  console.log("change");
   orientation.matches ? setPortrait() : setLandscape();
 }
 
 window.onresize = () => {
-  //let containerWidth = parseFloat(window.getComputedStyle(container).width);
-  //let controlsWidth = parseFloat(window.getComputedStyle(controls).width);
-  //let containerHeight = parseFloat(window.getComputedStyle(container).height);
-
-  if (window.innerWidth < window.innerHeight + 230) {
-    setPortrait();
-  } else {
-    setLandscape();
-  }
+  window.innerWidth < window.innerHeight + 230 ? setPortrait() : setLandscape();
 };
 
 function setPortrait() {
@@ -105,7 +72,7 @@ function setLandscape() {
   buttons.style.width = controls.style.width;
 }
 
-let iterations = 600;
+let iterations = 500;
 let selWidth = canvas.width;
 let selHeight = canvas.height;
 let x1 = 0;
@@ -260,6 +227,12 @@ function mouseMove(e) {
   }
 }
 
+function touchMove(e) {
+  if (dragging == true) {
+    touchDrag(e);
+  }
+}
+
 function mouseDown(e) {
   let rect = overlay.getBoundingClientRect();
   let mouseX = e.clientX - rect.left;
@@ -272,9 +245,29 @@ function mouseDown(e) {
   }
 }
 
+function touchStart(e) {
+  if (e.targetTouches.length == 1) {
+    let touch = e.targetTouches[0];
+    let rect = overlay.getBoundingClientRect();
+    let touchX = touch.pageX - rect.left;
+    let touchY = touch.pageY - rect.top;
+    if (selection.getImageData(touchX, touchY, 1, 1).data[3] == 92) {
+      dragging = true;
+      boxPositionX = touchX - x1;
+      boxPositionY = touchY - y1;
+    }
+  }
+}
+
 function mouseUp() {
   if (dragging == true) {
     finishDrag = true;
+    dragging = false;
+  }
+}
+
+function touchEnd() {
+  if (dragging == true) {
     dragging = false;
   }
 }
@@ -290,6 +283,20 @@ function dragBox(e) {
   y1 = mouseY - boxPositionY;
   selection.fillStyle = "rgba(0, 0, 255, 0.36)";
   selection.fillRect(x1, y1, squareSizeX, squareSizeY);
+}
+
+function touchDrag(e) {
+  if (e.targetTouches.length == 1) {
+    selection.clearRect(0, 0, overlay.width, overlay.height);
+    let touch = e.targetTouches[0];
+    let rect = overlay.getBoundingClientRect();
+    let touchX = touch.pageX - rect.left;
+    let touchY = touch.pageY - rect.top;
+    x1 = touchX - boxPositionX;
+    y1 = touchY - boxPositionY;
+    selection.fillStyle = "rgba(0, 0, 255, 0.36)";
+    selection.fillRect(x1, y1, squareSizeX, squareSizeY);
+  }
 }
 
 function drawSelection(e) {
