@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const canvas = document.getElementById("frac"),
   overlay = document.getElementById("overlay"),
   frac = canvas.getContext("2d"),
@@ -19,6 +20,32 @@ const renderBtn = document.getElementById("renderBtn"),
   fringeDisplay3 = document.getElementById("fringeDisplay3"),
   canvasContainer = document.getElementById("canvasContainer"),
   controls = document.getElementById("controls");
+=======
+const canvas = document.getElementById("frac");
+const overlay = document.getElementById("overlay");
+const controls = document.getElementById("controls");
+const sliders = document.getElementById("sliders");
+const buttons = document.getElementById("buttons");
+const canvasContainer = document.getElementById("canvasContainer");
+const container = document.getElementById("container");
+const frac = canvas.getContext("2d");
+const selection = overlay.getContext("2d");
+
+const renderBtn = document.getElementById("renderBtn");
+const backBtn = document.getElementById("backBtn");
+const resetBtn = document.getElementById("resetBtn");
+const iterDisplay = document.getElementById("iterDisplay");
+const iterSlider = document.getElementById("iterSlider");
+const fringeSlider1 = document.getElementById("fringeSlider1");
+const fringeColor1 = document.getElementById("fringeColor1");
+const fringeDisplay1 = document.getElementById("fringeDisplay1");
+const fringeSlider2 = document.getElementById("fringeSlider2");
+const fringeColor2 = document.getElementById("fringeColor2");
+const fringeDisplay2 = document.getElementById("fringeDisplay2");
+const fringeSlider3 = document.getElementById("fringeSlider3");
+const fringeColor3 = document.getElementById("fringeColor3");
+const fringeDisplay3 = document.getElementById("fringeDisplay3");
+>>>>>>> 6b2523a92719a2ef8b75ffeff156270be2579954
 
 renderBtn.addEventListener("click", updateRenderList);
 backBtn.addEventListener("click", goBack);
@@ -32,38 +59,50 @@ overlay.addEventListener("mousemove", mouseMove);
 overlay.addEventListener("mousedown", mouseDown);
 overlay.addEventListener("mouseup", mouseUp);
 
-if (window.innerWidth > window.innerHeight) {
-  setLandscape();
-} else {
-  setPortait();
+let landscape;
+
+window.innerWidth > window.innerHeight ? setLandscape() : setPortrait();
+
+let orientation = window.matchMedia("(orientation: portrait)");
+orientation.addListener(rearrange);
+
+function rearrange(orientation) {
+  console.log("change");
+  orientation.matches ? setPortrait() : setLandscape();
 }
 
-let r = window.matchMedia("(orientation: portrait)");
-r.addListener(rearrange);
+window.onresize = () => {
+  //let containerWidth = parseFloat(window.getComputedStyle(container).width);
+  //let controlsWidth = parseFloat(window.getComputedStyle(controls).width);
+  //let containerHeight = parseFloat(window.getComputedStyle(container).height);
 
-function rearrange(r) {
-  if (r.matches) {
-    setPortait();
+  if (window.innerWidth < window.innerHeight + 230) {
+    setPortrait();
   } else {
     setLandscape();
   }
-}
+};
 
-function setPortait() {
+function setPortrait() {
+  landscape = false;
   size = window.innerWidth * 0.9;
   canvas.width = canvas.height = overlay.width = overlay.height = size;
   canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
   controls.style.flexFlow = "row";
   controls.style.width = canvasContainer.style.width;
+  buttons.style.width = "40%";
+  buttons.style.height = "120px";
 }
 
 function setLandscape() {
+  landscape = true;
   size = window.innerHeight * 0.9;
   canvas.width = canvas.height = overlay.width = overlay.height = size;
   canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
   controls.style.flexFlow = "column";
   controls.style.height = canvasContainer.style.height;
-  controls.style.width = iterSlider.style.width;
+  controls.style.width = sliders.style.width;
+  buttons.style.width = controls.style.width;
 }
 
 let iterations = 600;
