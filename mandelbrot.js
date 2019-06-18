@@ -6,6 +6,7 @@ const canvas = document.getElementById("frac"),
 const renderBtn = document.getElementById("renderBtn"),
   backBtn = document.getElementById("backBtn"),
   resetBtn = document.getElementById("resetBtn"),
+  helpBtn = document.getElementById("helpBtn"),
   iterDisplay = document.getElementById("iterDisplay"),
   iterSlider = document.getElementById("iterSlider"),
   fringeSlider1 = document.getElementById("fringeSlider1"),
@@ -18,12 +19,23 @@ const renderBtn = document.getElementById("renderBtn"),
   fringeColor3 = document.getElementById("fringeColor3"),
   fringeDisplay3 = document.getElementById("fringeDisplay3"),
   canvasContainer = document.getElementById("canvasContainer"),
+  guide = document.getElementById("guide"),
+  closeGuide = document.getElementById("closeGuide"),
   controls = document.getElementById("controls");
 
 renderBtn.addEventListener("click", updateRenderList);
 backBtn.addEventListener("click", goBack);
 resetBtn.addEventListener("click", reset);
-iterSlider.addEventListener("change", iterUpdate);
+helpBtn.addEventListener("click", showGuide);
+closeGuide.addEventListener("click", hideGuide);
+iterSlider.addEventListener("mousemove", iterUpdate);
+iterSlider.addEventListener("touchmove", iterUpdate);
+fringeSlider1.addEventListener("mousemove", slider1Change);
+fringeSlider2.addEventListener("mousemove", slider2Change);
+fringeSlider3.addEventListener("mousemove", slider3Change);
+fringeSlider1.addEventListener("touchmove", slider1Change);
+fringeSlider2.addEventListener("touchmove", slider2Change);
+fringeSlider3.addEventListener("touchmove", slider3Change);
 
 backBtn.disabled = true;
 
@@ -56,7 +68,7 @@ function setPortrait() {
   canvas.width = canvas.height = overlay.width = overlay.height = size;
   canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
   canvasContainer.style.marginTop = "30px";
-  controls.style.flexFlow = "row";
+  controls.style.flexDirection = "row";
   controls.style.width = canvasContainer.style.width;
   buttons.style.width = "40%";
   buttons.style.height = "200px";
@@ -67,7 +79,7 @@ function setLandscape() {
   size = window.innerHeight * 0.9;
   canvas.width = canvas.height = overlay.width = overlay.height = size;
   canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
-  controls.style.flexFlow = "column";
+  controls.style.flexDirection = "column";
   controls.style.height = canvasContainer.style.height;
   controls.style.width = sliders.style.width;
   buttons.style.width = controls.style.width;
@@ -162,13 +174,22 @@ function render() {
         if (belongsToSet == iterations) {
           frac.fillStyle = "#000";
           frac.fillRect(x, y, 1, 1);
-        } else if (belongsToSet > (iterations / 100) * fringeSlider1.value) {
+        } else if (
+          belongsToSet >
+          (iterations / 100) * (100 - fringeSlider1.value)
+        ) {
           frac.fillStyle = `${fringeColor1.value}`;
           frac.fillRect(x, y, 1, 1);
-        } else if (belongsToSet > (iterations / 100) * fringeSlider2.value) {
+        } else if (
+          belongsToSet >
+          (iterations / 100) * (100 - fringeSlider2.value)
+        ) {
           frac.fillStyle = `${fringeColor2.value}`;
           frac.fillRect(x, y, 1, 1);
-        } else if (belongsToSet > (iterations / 100) * fringeSlider3.value) {
+        } else if (
+          belongsToSet >
+          (iterations / 100) * (100 - fringeSlider3.value)
+        ) {
           frac.fillStyle = `${fringeColor3.value}`;
           frac.fillRect(x, y, 1, 1);
         }
@@ -199,6 +220,7 @@ function reset() {
   x1 = 0;
   y1 = 0;
   count = 0;
+  backBtn.disabled = true;
   render();
 }
 
@@ -333,6 +355,45 @@ function drawSelection(e) {
 
 function iterUpdate() {
   iterations = iterSlider.value;
+  iterDisplay.textContent = iterSlider.value;
+}
+
+function slider1Change() {
+  fringeDisplay1.textContent = fringeSlider1.value;
+  if (Number(fringeSlider1.value) > Number(fringeSlider2.value)) {
+    fringeSlider2.value = fringeSlider1.value;
+    fringeDisplay2.textContent = fringeSlider1.value;
+    slider2Change();
+  }
+}
+
+function slider2Change() {
+  fringeDisplay2.textContent = fringeSlider2.value;
+  if (Number(fringeSlider2.value) > Number(fringeSlider3.value)) {
+    fringeSlider3.value = fringeSlider2.value;
+    fringeDisplay3.textContent = fringeSlider2.value;
+  }
+  if (Number(fringeSlider2.value) < Number(fringeSlider1.value)) {
+    fringeSlider1.value = fringeSlider2.value;
+    fringeDisplay1.textContent = fringeSlider2.value;
+  }
+}
+
+function slider3Change() {
+  fringeDisplay3.textContent = fringeSlider3.value;
+  if (Number(fringeSlider3.value) < Number(fringeSlider2.value)) {
+    fringeSlider2.value = fringeSlider3.value;
+    fringeDisplay2.textContent = fringeSlider3.value;
+    slider2Change();
+  }
+}
+
+function showGuide() {
+  guide.style.visibility = "visible";
+}
+
+function hideGuide() {
+  guide.style.visibility = "hidden";
 }
 
 render();
