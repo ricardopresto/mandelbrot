@@ -158,11 +158,14 @@ function updateRenderList() {
 }
 
 function render() {
+  let x = 0;
   frac.clearRect(0, 0, canvas.width, canvas.height);
   selection.clearRect(0, 0, overlay.width, overlay.height);
+  renderBtn.disabled = true;
+  resetBtn.disabled = true;
+  backBtn.disabled = true;
 
-  let x = 0;
-  setInterval(function() {
+  let loop = setInterval(function() {
     if (x < size) {
       for (let y = 0; y < size; y++) {
         let belongsToSet = mandelbrotCheck(
@@ -196,6 +199,12 @@ function render() {
       }
     }
     x++;
+    if (x > size) {
+      renderBtn.disabled = false;
+      resetBtn.disabled = false;
+      count > 0 ? (backBtn.disabled = false) : null;
+      clearInterval(loop);
+    }
   }, 0);
 }
 
