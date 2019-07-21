@@ -1,10 +1,26 @@
 <!DOCTYPE html>
   <head>
+    <script src="https://kit.fontawesome.com/6d9113b59f.js"></script>
     <link rel="stylesheet" href="mandelbrot.css">
     <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
   </head>
   <body>
     <div id="container">
+      <div id="guide">
+        <div id="header">
+          <i id="closeGuide" class="far fa-times-circle"></i>
+        </div>
+        <h1>Mandlebrot Set Generator</h1>
+        <p>Click or tap twice to select an area to investigate.</p>
+        <p>Click or tap and hold the selected area to drag.</p>
+        <p>Hit 'Render' to zoom in on the selection.</p>
+        <p>'Back' to return the previous selection.</p>
+        <p>'Reset' returns to the original image.</p>
+        <p>The 'Iterations' slider controls the accuracy of the image. A higher number means a more 
+          accurate rendering, but slower performance.</p>
+        <p>The 'Fringe' sliders allow colored boundaries to be added. The color can be adjusted by clicking 
+          on the box under the slider.</p>
+      </div>
       <div id="canvasContainer">
           <canvas id="frac"></canvas>
           <canvas id="overlay"></canvas>
@@ -16,6 +32,7 @@
             <button id="backBtn">Back</button>
             <button id="resetBtn">Reset</button>
           </div>
+          <button id="helpBtn">Guide</button>
         </div>
         <div id="sliders">
           <p class="sliderBlock">
@@ -27,8 +44,6 @@
               min="300" 
               max="3000" 
               value="500" 
-              onmousemove="document.getElementById('iterDisplay').innerHTML=this.value;"
-              ontouchmove="document.getElementById('iterDisplay').innerHTML=this.value;"
             >
             <span>Iterations: </span><span id="iterDisplay">500</span>
           </p>
@@ -40,13 +55,11 @@
               class="slider" 
               min="0" 
               max="100" 
-              value="100" 
-              onmousemove="document.getElementById('fringeDisplay1').innerHTML=this.value;"
-              ontouchmove="document.getElementById('fringeDisplay1').innerHTML=this.value;"
+              value="0" 
             >
           <span>
             <input type="color" name="fringeColor1" id="fringeColor1" value="#ffffff"/>
-            <span>Fringe: </span><span id="fringeDisplay1">100</span><span>%</span>
+            <span>Fringe: </span><span id="fringeDisplay1">0</span><span>%</span>
           </p>
           <p class="sliderBlock">
             <input 
@@ -56,13 +69,11 @@
               class="slider" 
               min="0" 
               max="100" 
-              value="100" 
-              onmousemove="document.getElementById('fringeDisplay2').innerHTML=this.value;"
-              ontouchmove="document.getElementById('fringeDisplay2').innerHTML=this.value;"
+              value="0" 
             >
           <span>
               <input type="color" name="fringeColor2" id="fringeColor2" value="#ffffff"/>
-              <span>Fringe: </span><span id="fringeDisplay2">100</span><span>%</span>
+              <span>Fringe: </span><span id="fringeDisplay2">0</span><span>%</span>
           </p>
           <p class="sliderBlock">
             <input 
@@ -72,13 +83,11 @@
               class="slider" 
               min="0" 
               max="100" 
-              value="100" 
-              onmousemove="document.getElementById('fringeDisplay3').innerHTML=this.value;"
-              ontouchmove="document.getElementById('fringeDisplay3').innerHTML=this.value;"
+              value="0" 
             >
           <span>
               <input type="color" name="fringeColor3" id="fringeColor3" value="#ffffff"/>
-              <span>Fringe: </span><span id="fringeDisplay3">100</span><span>%</span>
+              <span>Fringe: </span><span id="fringeDisplay3">0</span><span>%</span>
           </p> 
 
         </div>
