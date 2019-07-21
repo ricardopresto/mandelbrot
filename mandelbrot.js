@@ -39,13 +39,13 @@ let landscape;
 
 window.innerWidth > window.innerHeight ? setLandscape() : setPortrait();
 
-let orientation = window.matchMedia("(orientation: portrait)");
+/* let orientation = window.matchMedia("(orientation: portrait)");
 orientation.addListener(rearrange);
 
 function rearrange(orientation) {
   orientation.matches ? setPortrait() : setLandscape();
 }
-
+ */
 window.onresize = () => {
   window.innerWidth < window.innerHeight + 230 ? setPortrait() : setLandscape();
 };
