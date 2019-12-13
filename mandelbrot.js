@@ -23,19 +23,23 @@ const renderBtn = document.getElementById("renderBtn"),
   closeGuide = document.getElementById("closeGuide"),
   controls = document.getElementById("controls");
 
-renderBtn.addEventListener("click", updateRenderList);
+renderBtn.addEventListener("click", renderBtnClick);
 backBtn.addEventListener("click", goBack);
 resetBtn.addEventListener("click", reset);
 helpBtn.addEventListener("click", showGuide);
 closeGuide.addEventListener("click", hideGuide);
 iterSlider.addEventListener("mousemove", iterUpdate);
 iterSlider.addEventListener("touchmove", iterUpdate);
+iterSlider.addEventListener("change", iterUpdate);
 fringeSlider1.addEventListener("mousemove", slider1Change);
 fringeSlider2.addEventListener("mousemove", slider2Change);
 fringeSlider3.addEventListener("mousemove", slider3Change);
 fringeSlider1.addEventListener("touchmove", slider1Change);
 fringeSlider2.addEventListener("touchmove", slider2Change);
 fringeSlider3.addEventListener("touchmove", slider3Change);
+fringeSlider1.addEventListener("change", slider1Change);
+fringeSlider2.addEventListener("change", slider2Change);
+fringeSlider3.addEventListener("change", slider3Change);
 
 backBtn.disabled = true;
 
@@ -51,13 +55,6 @@ let landscape;
 
 window.innerWidth > window.innerHeight ? setLandscape() : setPortrait();
 
-/* let orientation = window.matchMedia("(orientation: portrait)");
-orientation.addListener(rearrange);
-
-function rearrange(orientation) {
-  orientation.matches ? setPortrait() : setLandscape();
-}
- */
 window.onresize = () => {
   window.innerWidth < window.innerHeight + 230 ? setPortrait() : setLandscape();
 };
@@ -67,11 +64,10 @@ function setPortrait() {
   size = window.innerWidth * 0.9;
   canvas.width = canvas.height = overlay.width = overlay.height = size;
   canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
-  canvasContainer.style.marginTop = "30px";
+  canvasContainer.style.marginTop = "50px";
   controls.style.flexDirection = "row";
   controls.style.width = canvasContainer.style.width;
   buttons.style.width = "40%";
-  buttons.style.height = "200px";
 }
 
 function setLandscape() {
@@ -93,10 +89,12 @@ let y1 = 0;
 let count = 0;
 let boxPositionX, boxPositionY;
 let squareSizeX, squareSizeY;
+let rendering = false;
 let renderUpdate = false;
 let drawingBox = false;
 let dragging = false;
 let finishDrag = false;
+let loop;
 
 let renderList = [
   {
@@ -123,6 +121,10 @@ function mandelbrotCheck(x, y) {
     }
   }
   return iterations;
+}
+
+function renderBtnClick() {
+  rendering ? stop() : updateRenderList();
 }
 
 function updateRenderList() {
@@ -161,11 +163,12 @@ function render() {
   let x = 0;
   frac.clearRect(0, 0, canvas.width, canvas.height);
   selection.clearRect(0, 0, overlay.width, overlay.height);
-  renderBtn.disabled = true;
+  renderBtn.innerText = "Stop";
   resetBtn.disabled = true;
   backBtn.disabled = true;
+  rendering = true;
 
-  let loop = setInterval(function() {
+  loop = setInterval(function() {
     if (x < size) {
       for (let y = 0; y < size; y++) {
         let belongsToSet = mandelbrotCheck(
@@ -200,12 +203,20 @@ function render() {
     }
     x++;
     if (x > size) {
-      renderBtn.disabled = false;
       resetBtn.disabled = false;
       count > 0 ? (backBtn.disabled = false) : null;
+      renderBtn.innerText = "Render";
       clearInterval(loop);
     }
   }, 0);
+}
+
+function stop() {
+  clearInterval(loop);
+  rendering = false;
+  resetBtn.disabled = false;
+  count > 0 ? (backBtn.disabled = false) : null;
+  renderBtn.innerText = "Render";
 }
 
 function goBack() {
