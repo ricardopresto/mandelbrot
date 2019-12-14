@@ -176,4 +176,5 @@ canvas {
   border: 1px solid #000;
   cursor: default;
   margin: 0 10px;
+  user-select: none;
 }
