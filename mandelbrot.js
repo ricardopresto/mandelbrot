@@ -20,14 +20,13 @@ const renderBtn = document.getElementById("renderBtn"),
   fringeDisplay3 = document.getElementById("fringeDisplay3"),
   canvasContainer = document.getElementById("canvasContainer"),
   guide = document.getElementById("guide"),
-  closeGuide = document.getElementById("closeGuide"),
   controls = document.getElementById("controls");
 
 renderBtn.addEventListener("click", renderBtnClick);
 backBtn.addEventListener("click", goBack);
 resetBtn.addEventListener("click", reset);
 helpBtn.addEventListener("click", showGuide);
-closeGuide.addEventListener("click", hideGuide);
+guide.addEventListener("click", hideGuide);
 iterSlider.addEventListener("mousemove", iterUpdate);
 iterSlider.addEventListener("touchmove", iterUpdate);
 iterSlider.addEventListener("change", iterUpdate);
@@ -75,6 +74,7 @@ function setLandscape() {
   size = window.innerHeight * 0.9;
   canvas.width = canvas.height = overlay.width = overlay.height = size;
   canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
+  canvasContainer.style.marginTop = "20px";
   controls.style.flexDirection = "column";
   controls.style.height = canvasContainer.style.height;
   controls.style.width = sliders.style.width;
@@ -184,19 +184,19 @@ function render() {
           belongsToSet >
           (iterations / 100) * (100 - fringeSlider1.value)
         ) {
-          frac.fillStyle = `${fringeColor1.value}`;
+          frac.fillStyle = `#${fringeColor1.value}`;
           frac.fillRect(x, y, 1, 1);
         } else if (
           belongsToSet >
           (iterations / 100) * (100 - fringeSlider2.value)
         ) {
-          frac.fillStyle = `${fringeColor2.value}`;
+          frac.fillStyle = `#${fringeColor2.value}`;
           frac.fillRect(x, y, 1, 1);
         } else if (
           belongsToSet >
           (iterations / 100) * (100 - fringeSlider3.value)
         ) {
-          frac.fillStyle = `${fringeColor3.value}`;
+          frac.fillStyle = `#${fringeColor3.value}`;
           frac.fillRect(x, y, 1, 1);
         }
       }

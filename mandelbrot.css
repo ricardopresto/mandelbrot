@@ -23,18 +23,14 @@
   background-color: #000;
   opacity: 0.8;
   color: #fff;
+  display: flex;
+  justify-content: center;
+}
+
+#guideContainer {
+  max-width: 800px;
   text-align: center;
-}
-
-#guide i {
-  font-size: 3em;
-  text-align: right;
-  cursor: pointer;
-}
-
-#header {
-  text-align: right;
-  margin: 0.5em 3em 0;
+  margin-top: 50px;
 }
 
 #guide p {
@@ -83,8 +79,8 @@ button {
   border: 1px solid #000;
   border-radius: 4px;
   font-size: 1em;
-  -webkit-transition: 0.2s;
-  transition: box-shadow 0.2s;
+  -webkit-transition: 0.1s;
+  transition: box-shadow 0.1s;
 }
 
 #helpBtn {
@@ -94,7 +90,7 @@ button {
 }
 
 input {
-  transition: box-shadow 0.2s;
+  transition: box-shadow 0.1s;
 }
 
 button:hover {
@@ -124,6 +120,11 @@ input:hover {
   margin: 0.5em;
 }
 
+.colorPicker {
+  display: flex;
+  flex-direction: row;
+}
+
 #overlay {
   border: 1px solid black;
   z-index: 1;
@@ -137,13 +138,13 @@ canvas {
   -webkit-appearance: none;
   width: 100%;
   height: 16px;
-  margin-bottom: 10px;
+  margin-top: 10px;
   background: #fff;
   outline: none;
   border: 1px solid #000;
   border-radius: 6px;
-  -webkit-transition: 0.2s;
-  transition: box-shadow 0.2s;
+  -webkit-transition: 0.1s;
+  transition: box-shadow 0.1s;
 }
 
 .slider:hover {
@@ -165,4 +166,14 @@ canvas {
   height: 10px;
   background: #292a2b;
   cursor: pointer;
+}
+
+.jscolor {
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+  font-size: 0;
+  border: 1px solid #000;
+  cursor: default;
+  margin: 0 10px;
 }
