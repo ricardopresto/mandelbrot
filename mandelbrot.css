@@ -6,9 +6,14 @@
 }
 
 #container {
+  display: -webkit-box;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
   flex-flow: row wrap;
+  -webkit-box-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
   align-items: center;
 }
 
@@ -23,7 +28,9 @@
   background-color: #000;
   opacity: 0.8;
   color: #fff;
+  display: -webkit-box;
   display: flex;
+  -webkit-box-pack: center;
   justify-content: center;
 }
 
@@ -39,34 +46,52 @@
 }
 
 #canvasContainer {
+  display: -webkit-box;
   display: flex;
+  -webkit-box-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
   align-items: center;
 }
 
 #controls {
+  display: -webkit-box;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
   flex-flow: column;
   width: 230px;
   min-width: 230px;
+  -webkit-box-pack: space-evenly;
   justify-content: space-evenly;
   margin: 1em;
 }
 
 #buttons {
+  display: -webkit-box;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
   flex-direction: column;
+  -webkit-box-pack: center;
   justify-content: center;
+  -webkit-box-align: center;
   align-items: center;
   min-width: 150px;
   max-width: 300px;
+  height: -webkit-min-content;
+  height: -moz-min-content;
   height: min-content;
 }
 
 #smallButtons {
+  display: -webkit-box;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
   flex-flow: row wrap;
   width: 80%;
+  -webkit-box-pack: justify;
   justify-content: space-between;
 }
 
@@ -80,6 +105,7 @@ button {
   border-radius: 4px;
   font-size: 1em;
   -webkit-transition: 0.1s;
+  -webkit-transition: box-shadow 0.1s;
   transition: box-shadow 0.1s;
 }
 
@@ -90,6 +116,7 @@ button {
 }
 
 input {
+  -webkit-transition: box-shadow 0.1s;
   transition: box-shadow 0.1s;
 }
 
@@ -109,7 +136,10 @@ input:hover {
 }
 
 #sliders {
+  display: -webkit-box;
   display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
   flex-flow: column wrap;
   width: 100%;
   min-width: 230px;
@@ -121,7 +151,10 @@ input:hover {
 }
 
 .colorPicker {
+  display: -webkit-box;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
   flex-direction: row;
 }
 
@@ -144,6 +177,7 @@ canvas {
   border: 1px solid #000;
   border-radius: 6px;
   -webkit-transition: 0.1s;
+  -webkit-transition: box-shadow 0.1s;
   transition: box-shadow 0.1s;
 }
 
@@ -176,5 +210,8 @@ canvas {
   border: 1px solid #000;
   cursor: default;
   margin: 0 10px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
 }
