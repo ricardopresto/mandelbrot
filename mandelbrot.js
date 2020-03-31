@@ -138,6 +138,7 @@ function updateRenderList() {
     backBtn.disabled = false;
   }
   renderUpdate = false;
+  console.log(renderList);
   render();
 }
 

@@ -112,10 +112,6 @@ input:hover {
   max-width: 400px;
 }
 
-.sliderBlock {
-  margin: 0.5em;
-}
-
 .colorPicker {
   display: -webkit-box;
   display: flex;
