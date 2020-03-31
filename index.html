@@ -14,43 +14,46 @@
       <canvas id="frac"></canvas>
       <canvas id="overlay"></canvas>
     </div>
-    <div id="controls">
-      <div id="buttons">
-        <button id="renderBtn">Render</button>
-        <div id="smallButtons">
+    <div>
+      <div id="controls">
+        <div id="fringeSliderSurround">
+          <div id="fringeSliders">
+            <div class="sliderBox">
+              <input class="jscolor" id="fringeColor00" value="ffffff" readonly>
+              <div class="dragBox" id="0"></div>
+            </div>
+            <div class="sliderBox">
+              <input class="jscolor" id="fringeColor01" value="ffffff" readonly>
+              <div class="dragBox" id="1"></div>
+            </div>
+            <div class="sliderBox">
+              <input class="jscolor" id="fringeColor02" value="ffffff" readonly>
+              <div class="dragBox" id="2"></div>
+            </div>
+            <div class="sliderBox">
+              <input class="jscolor" id="fringeColor03" value="ffffff" readonly>
+              <div class="dragBox" id="3"></div>
+            </div>
+            <div class="sliderBox">
+              <input class="jscolor" id="fringeColor04" value="ffffff" readonly>
+              <div class="dragBox" id="4"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="buttons">
+          <button id="renderBtn">Render</button>
           <button id="backBtn">Back</button>
           <button id="resetBtn">Reset</button>
         </div>
       </div>
-      <div id="sliders">
+
+      <div id="slider">
         <p class="sliderBlock">
           <input type="range" id="iterSlider" class="slider" min="300"
             max="5000" value="500">
           <span>Iterations: </span><span id="iterDisplay">500</span>
         </p>
-
-      </div>
-    </div>
-    <div id="container2">
-      <div class="sliderBox">
-        <input class="jscolor" id="fringeColor00" value="ffffff" readonly>
-        <div class="dragBox" id="0"></div>
-      </div>
-      <div class="sliderBox">
-        <input class="jscolor" id="fringeColor01" value="ffffff" readonly>
-        <div class="dragBox" id="1"></div>
-      </div>
-      <div class="sliderBox">
-        <input class="jscolor" id="fringeColor02" value="ffffff" readonly>
-        <div class="dragBox" id="2"></div>
-      </div>
-      <div class="sliderBox">
-        <input class="jscolor" id="fringeColor03" value="ffffff" readonly>
-        <div class="dragBox" id="3"></div>
-      </div>
-      <div class="sliderBox">
-        <input class="jscolor" id="fringeColor04" value="ffffff" readonly>
-        <div class="dragBox" id="4"></div>
       </div>
     </div>
   </div>

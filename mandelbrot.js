@@ -14,7 +14,9 @@ const renderBtn = document.getElementById("renderBtn"),
   fringeColor4 = document.getElementById("fringeColor03"),
   fringeColor5 = document.getElementById("fringeColor04"),
   canvasContainer = document.getElementById("canvasContainer"),
-  controls = document.getElementById("controls");
+  controls = document.getElementById("controls"),
+  fringeSliders = document.getElementById("fringeSliders"),
+  slider = document.getElementById("slider");
 
 renderBtn.addEventListener("click", renderBtnClick);
 backBtn.addEventListener("click", goBack);
@@ -57,10 +59,14 @@ function setLandscape() {
   canvas.width = canvas.height = overlay.width = overlay.height = size;
   canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
   canvasContainer.style.marginTop = "20px";
-  controls.style.flexDirection = "column";
-  controls.style.height = canvasContainer.style.height;
-  controls.style.width = sliders.style.width;
+  fringeSliders.style.height = `${size - 60}px`;
+
+  controls.style.flexDirection = "row";
+  controls.style.height = `${size - 60}px`;
+  controls.style.marginTop = "20px";
+
   buttons.style.width = controls.style.width;
+  slider.style.width = controls.style.width;
 }
 
 let iterations = 500;
@@ -362,7 +368,6 @@ render();
 
 const dragBoxes = Array.from(document.getElementsByClassName("dragBox"));
 const sliderBoxes = Array.from(document.getElementsByClassName("sliderBox"));
-const container2 = document.getElementById("container2");
 
 var dragStarts = [];
 var dragPositions = [437, 469, 501, 533, 565];
