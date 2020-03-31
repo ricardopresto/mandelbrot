@@ -17,34 +17,6 @@
   align-items: center;
 }
 
-#guide {
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  visibility: hidden;
-  background-color: #000;
-  opacity: 0.8;
-  color: #fff;
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-pack: center;
-  justify-content: center;
-}
-
-#guideContainer {
-  max-width: 800px;
-  text-align: center;
-  margin-top: 50px;
-}
-
-#guide p {
-  font-size: 1.5em;
-  margin: 1em 1em 0 0;
-}
-
 #canvasContainer {
   display: -webkit-box;
   display: flex;
@@ -107,12 +79,6 @@ button {
   -webkit-transition: 0.1s;
   -webkit-transition: box-shadow 0.1s;
   transition: box-shadow 0.1s;
-}
-
-#helpBtn {
-  margin: 0.5em;
-  height: 2.5em;
-  width: 80%;
 }
 
 input {
@@ -214,4 +180,34 @@ canvas {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+#container2 {
+  position: relative;
+  margin: 50px;
+  height: 600px;
+  width: 100px;
+  border: 1px solid #000;
+}
+.sliderBox {
+  position: absolute;
+  width: 80px;
+  height: 30px;
+  border: 1px solid #555;
+  border-radius: 6px;
+  margin: 0 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.dragBox {
+  height: 30px;
+  width: 30px;
+  background-color: #555;
+  border-radius: 0 6px 6px 0;
 }

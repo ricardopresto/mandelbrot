@@ -6,40 +6,22 @@ const canvas = document.getElementById("frac"),
 const renderBtn = document.getElementById("renderBtn"),
   backBtn = document.getElementById("backBtn"),
   resetBtn = document.getElementById("resetBtn"),
-  helpBtn = document.getElementById("helpBtn"),
   iterDisplay = document.getElementById("iterDisplay"),
   iterSlider = document.getElementById("iterSlider"),
-  fringeSlider1 = document.getElementById("fringeSlider1"),
-  fringeColor1 = document.getElementById("fringeColor1"),
-  fringeDisplay1 = document.getElementById("fringeDisplay1"),
-  fringeSlider2 = document.getElementById("fringeSlider2"),
-  fringeColor2 = document.getElementById("fringeColor2"),
-  fringeDisplay2 = document.getElementById("fringeDisplay2"),
-  fringeSlider3 = document.getElementById("fringeSlider3"),
-  fringeColor3 = document.getElementById("fringeColor3"),
-  fringeDisplay3 = document.getElementById("fringeDisplay3"),
+  fringeColor1 = document.getElementById("fringeColor00"),
+  fringeColor2 = document.getElementById("fringeColor01"),
+  fringeColor3 = document.getElementById("fringeColor02"),
+  fringeColor4 = document.getElementById("fringeColor03"),
+  fringeColor5 = document.getElementById("fringeColor04"),
   canvasContainer = document.getElementById("canvasContainer"),
-  guide = document.getElementById("guide"),
   controls = document.getElementById("controls");
 
 renderBtn.addEventListener("click", renderBtnClick);
 backBtn.addEventListener("click", goBack);
 resetBtn.addEventListener("click", reset);
-helpBtn.addEventListener("click", showGuide);
-guide.addEventListener("click", hideGuide);
 iterSlider.addEventListener("mousemove", iterUpdate);
 iterSlider.addEventListener("touchmove", iterUpdate);
 iterSlider.addEventListener("change", iterUpdate);
-fringeSlider1.addEventListener("mousemove", slider1Change);
-fringeSlider2.addEventListener("mousemove", slider2Change);
-fringeSlider3.addEventListener("mousemove", slider3Change);
-fringeSlider1.addEventListener("touchmove", slider1Change);
-fringeSlider2.addEventListener("touchmove", slider2Change);
-fringeSlider3.addEventListener("touchmove", slider3Change);
-fringeSlider1.addEventListener("change", slider1Change);
-fringeSlider2.addEventListener("change", slider2Change);
-fringeSlider3.addEventListener("change", slider3Change);
-
 backBtn.disabled = true;
 
 overlay.addEventListener("click", canvasClick);
@@ -180,23 +162,20 @@ function render() {
         if (belongsToSet == iterations) {
           frac.fillStyle = "#000";
           frac.fillRect(x, y, 1, 1);
-        } else if (
-          belongsToSet >
-          (iterations / 100) * (100 - fringeSlider1.value)
-        ) {
-          frac.fillStyle = `#${fringeColor1.value}`;
+        } else if (belongsToSet > (iterations / 100) * percentPositions[4]) {
+          frac.fillStyle = `#${fringeColor5.value}`;
           frac.fillRect(x, y, 1, 1);
-        } else if (
-          belongsToSet >
-          (iterations / 100) * (100 - fringeSlider2.value)
-        ) {
+        } else if (belongsToSet > (iterations / 100) * percentPositions[3]) {
+          frac.fillStyle = `#${fringeColor4.value}`;
+          frac.fillRect(x, y, 1, 1);
+        } else if (belongsToSet > (iterations / 100) * percentPositions[2]) {
+          frac.fillStyle = `#${fringeColor3.value}`;
+          frac.fillRect(x, y, 1, 1);
+        } else if (belongsToSet > (iterations / 100) * percentPositions[1]) {
           frac.fillStyle = `#${fringeColor2.value}`;
           frac.fillRect(x, y, 1, 1);
-        } else if (
-          belongsToSet >
-          (iterations / 100) * (100 - fringeSlider3.value)
-        ) {
-          frac.fillStyle = `#${fringeColor3.value}`;
+        } else if (belongsToSet > (iterations / 100) * percentPositions[0]) {
+          frac.fillStyle = `#${fringeColor1.value}`;
           frac.fillRect(x, y, 1, 1);
         }
       }
@@ -378,42 +357,67 @@ function iterUpdate() {
   iterDisplay.textContent = iterSlider.value;
 }
 
-function slider1Change() {
-  fringeDisplay1.textContent = fringeSlider1.value;
-  if (Number(fringeSlider1.value) > Number(fringeSlider2.value)) {
-    fringeSlider2.value = fringeSlider1.value;
-    fringeDisplay2.textContent = fringeSlider1.value;
-    slider2Change();
-  }
-}
-
-function slider2Change() {
-  fringeDisplay2.textContent = fringeSlider2.value;
-  if (Number(fringeSlider2.value) > Number(fringeSlider3.value)) {
-    fringeSlider3.value = fringeSlider2.value;
-    fringeDisplay3.textContent = fringeSlider2.value;
-  }
-  if (Number(fringeSlider2.value) < Number(fringeSlider1.value)) {
-    fringeSlider1.value = fringeSlider2.value;
-    fringeDisplay1.textContent = fringeSlider2.value;
-  }
-}
-
-function slider3Change() {
-  fringeDisplay3.textContent = fringeSlider3.value;
-  if (Number(fringeSlider3.value) < Number(fringeSlider2.value)) {
-    fringeSlider2.value = fringeSlider3.value;
-    fringeDisplay2.textContent = fringeSlider3.value;
-    slider2Change();
-  }
-}
-
-function showGuide() {
-  guide.style.visibility = "visible";
-}
-
-function hideGuide() {
-  guide.style.visibility = "hidden";
-}
-
 render();
+
+const dragBoxes = Array.from(document.getElementsByClassName("dragBox"));
+const sliderBoxes = Array.from(document.getElementsByClassName("sliderBox"));
+const container2 = document.getElementById("container2");
+
+var dragStarts = [];
+var dragPositions = [437, 469, 501, 533, 565];
+var percentPositions = [100, 100, 100, 100, 100];
+
+for (n = 0; n < dragPositions.length; n++) {
+  dragBoxes[n].dragging = false;
+  sliderBoxes[n].style.top = dragPositions[n] + "px";
+
+  dragBoxes[n].addEventListener("mousedown", e => {
+    dragBoxes[e.target.id].dragging = true;
+    dragStarts[e.target.id] = e.offsetY;
+  });
+}
+
+document.addEventListener("mousemove", e => {
+  for (let n = 0; n < dragBoxes.length; n++) {
+    if (dragBoxes[n].dragging == true) {
+      let pos = e.clientY - dragStarts[n] - 51;
+      if (pos > n * 32 + 2 && pos < 596 - (5 - n) * 32 + 2) {
+        dragPositions[n] = pos;
+        sliderBoxes[n].style.top = `${dragPositions[n]}px`;
+      }
+      calculatePosition(n, sliderBoxes[n].style.top);
+    }
+    moveNextBox(n);
+  }
+  for (let n = dragBoxes.length - 1; n >= 0; n--) {
+    movePrevBox(n);
+  }
+});
+
+document.addEventListener("mouseup", () => {
+  for (n = 0; n < dragPositions.length; n++) {
+    dragBoxes[n].dragging = false;
+  }
+});
+
+function moveNextBox(n) {
+  if (dragPositions[n] > dragPositions[n + 1] - 32) {
+    dragPositions[n + 1] = dragPositions[n] + 32;
+    sliderBoxes[n + 1].style.top = `${dragPositions[n + 1]}px`;
+  }
+}
+function movePrevBox(n) {
+  if (dragPositions[n] < dragPositions[n - 1] + 32) {
+    dragPositions[n - 1] = dragPositions[n] - 32;
+    sliderBoxes[n - 1].style.top = `${dragPositions[n - 1]}px`;
+  }
+}
+
+function calculatePosition(n, top) {
+  top = Number(top.slice(0, -2));
+  let range = 600 - (5 - n) * 32 - n * 32;
+  let position = top - n * 32 - 3;
+  let positionPercent = (100 / range) * position;
+  percentPositions[n] = Math.floor(positionPercent) + 2;
+  console.log(percentPositions);
+}

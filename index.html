@@ -10,23 +10,6 @@
 
 <body>
   <div id="container">
-    <div id="guide">
-      <br />
-      <div id="guideContainer">
-        <h1>Mandlebrot Set Generator</h1>
-        <p>Click or tap twice to select an area to investigate.</p>
-        <p>Click or tap and hold the selected area to drag.</p>
-        <p>Hit 'Render' to zoom in on the selection.</p>
-        <p>'Back' to return the previous selection.</p>
-        <p>'Reset' returns to the original image.</p>
-        <p>The 'Iterations' slider controls the accuracy of the image. A higher
-          number means a more
-          accurate rendering, but slower performance.</p>
-        <p>The 'Fringe' sliders allow colored boundaries to be added. The color
-          can be adjusted by clicking
-          on the box under the slider.</p>
-      </div>
-    </div>
     <div id="canvasContainer">
       <canvas id="frac"></canvas>
       <canvas id="overlay"></canvas>
@@ -38,7 +21,6 @@
           <button id="backBtn">Back</button>
           <button id="resetBtn">Reset</button>
         </div>
-        <button id="helpBtn">Guide</button>
       </div>
       <div id="sliders">
         <p class="sliderBlock">
@@ -46,28 +28,29 @@
             max="5000" value="500">
           <span>Iterations: </span><span id="iterDisplay">500</span>
         </p>
-        <p class="sliderBlock">
-          <input type="range" id="fringeSlider1" class="slider" min="0"
-            max="100" value="0">
-          <p class="colorPicker">
-            <input class="jscolor" id="fringeColor1" value="ffffff" readonly>
-            <span>Fringe: </span><span id="fringeDisplay1">0</span><span>%</p>
-        </p>
-        <p class="sliderBlock">
-          <input type="range" id="fringeSlider2" class="slider" min="0"
-            max="100" value="0">
-          <p class="colorPicker">
-            <input class="jscolor" id="fringeColor2" value="ffffff" readonly>
-            <span>Fringe: </span><span id="fringeDisplay2">0</span><span>%</p>
-        </p>
-        <p class="sliderBlock">
-          <input type="range" id="fringeSlider3" class="slider" min="0"
-            max="100" value="90">
-          <p class="colorPicker">
-            <input class="jscolor" id="fringeColor3" value="ff0000" readonly>
-            <span>Fringe: </span><span id="fringeDisplay3">90</span><span>%</p>
-        </p>
 
+      </div>
+    </div>
+    <div id="container2">
+      <div class="sliderBox">
+        <input class="jscolor" id="fringeColor00" value="ffffff" readonly>
+        <div class="dragBox" id="0"></div>
+      </div>
+      <div class="sliderBox">
+        <input class="jscolor" id="fringeColor01" value="ffffff" readonly>
+        <div class="dragBox" id="1"></div>
+      </div>
+      <div class="sliderBox">
+        <input class="jscolor" id="fringeColor02" value="ffffff" readonly>
+        <div class="dragBox" id="2"></div>
+      </div>
+      <div class="sliderBox">
+        <input class="jscolor" id="fringeColor03" value="ffffff" readonly>
+        <div class="dragBox" id="3"></div>
+      </div>
+      <div class="sliderBox">
+        <input class="jscolor" id="fringeColor04" value="ffffff" readonly>
+        <div class="dragBox" id="4"></div>
       </div>
     </div>
   </div>
