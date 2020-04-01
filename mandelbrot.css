@@ -41,6 +41,7 @@ div {
   height: -webkit-min-content;
   height: -moz-min-content;
   height: min-content;
+  margin-top: 4rem;
 }
 button {
   display: block;
@@ -141,7 +142,7 @@ canvas {
 #fringeSliders {
   position: relative;
   margin-left: 20px;
-  width: 100px;
+  width: 90px;
   border: 1px solid #000;
   border-radius: 4px;
 }
@@ -149,9 +150,9 @@ canvas {
   position: absolute;
   width: 80px;
   height: 30px;
-  border: 1px solid #555;
+  border: 1px solid #666;
   border-radius: 6px;
-  margin: 0 5px;
+  margin: 0 4px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -164,6 +165,6 @@ canvas {
 .dragBox {
   height: 30px;
   width: 30px;
-  background-color: #555;
+  background-color: #666;
   border-radius: 0 6px 6px 0;
 }

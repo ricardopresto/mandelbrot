@@ -372,13 +372,15 @@ function iterUpdate() {
 const dragBoxes = Array.from(document.getElementsByClassName("dragBox"));
 const sliderBoxes = Array.from(document.getElementsByClassName("sliderBox"));
 
+const sliderBoxHeight = sliderBoxes[0].offsetHeight + 2;
+
 var dragStarts = [];
 var dragPositions = [
-  slidersHeight - 5 * 32 - 1,
-  slidersHeight - 4 * 32 - 1,
-  slidersHeight - 3 * 32 - 1,
-  slidersHeight - 2 * 32 - 1,
-  slidersHeight - 1 * 32 - 1
+  slidersHeight - 5 * sliderBoxHeight - 1,
+  slidersHeight - 4 * sliderBoxHeight - 1,
+  slidersHeight - 3 * sliderBoxHeight - 1,
+  slidersHeight - 2 * sliderBoxHeight - 1,
+  slidersHeight - 1 * sliderBoxHeight - 1
 ];
 var percentPositions = [100, 100, 100, 100, 100];
 
@@ -396,7 +398,10 @@ document.addEventListener("mousemove", e => {
   for (let n = 0; n < dragBoxes.length; n++) {
     if (dragBoxes[n].dragging == true) {
       let pos = e.clientY - dragStarts[n] - 21;
-      if (pos > n * 32 + 2 && pos < slidersHeight - 2 - (5 - n) * 32 + 2) {
+      if (
+        pos > n * sliderBoxHeight + 2 &&
+        pos < slidersHeight - 2 - (5 - n) * sliderBoxHeight + 2
+      ) {
         dragPositions[n] = pos;
         sliderBoxes[n].style.top = `${dragPositions[n]}px`;
       }
@@ -416,22 +421,24 @@ document.addEventListener("mouseup", () => {
 });
 
 function moveNextBox(n) {
-  if (dragPositions[n] > dragPositions[n + 1] - 32) {
-    dragPositions[n + 1] = dragPositions[n] + 32;
+  if (dragPositions[n] > dragPositions[n + 1] - sliderBoxHeight) {
+    dragPositions[n + 1] = dragPositions[n] + sliderBoxHeight;
     sliderBoxes[n + 1].style.top = `${dragPositions[n + 1]}px`;
+    calculatePosition(n + 1, sliderBoxes[n + 1].style.top);
   }
 }
 function movePrevBox(n) {
-  if (dragPositions[n] < dragPositions[n - 1] + 32) {
-    dragPositions[n - 1] = dragPositions[n] - 32;
+  if (dragPositions[n] < dragPositions[n - 1] + sliderBoxHeight) {
+    dragPositions[n - 1] = dragPositions[n] - sliderBoxHeight;
     sliderBoxes[n - 1].style.top = `${dragPositions[n - 1]}px`;
+    calculatePosition(n - 1, sliderBoxes[n - 1].style.top);
   }
 }
 
 function calculatePosition(n, top) {
   top = Number(top.slice(0, -2));
-  let range = slidersHeight - (5 - n) * 32 - n * 32;
-  let position = top - n * 32 - 3;
+  let range = slidersHeight - (5 - n) * sliderBoxHeight - n * sliderBoxHeight;
+  let position = top - n * sliderBoxHeight - 3;
   let positionPercent = (100 / range) * position;
   percentPositions[n] = Math.floor(positionPercent) + 1;
   console.log(percentPositions);
