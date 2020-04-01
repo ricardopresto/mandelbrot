@@ -14,9 +14,11 @@ const renderBtn = document.getElementById("renderBtn"),
   fringeColor4 = document.getElementById("fringeColor03"),
   fringeColor5 = document.getElementById("fringeColor04"),
   canvasContainer = document.getElementById("canvasContainer"),
-  controls = document.getElementById("controls"),
+  mainControls = document.getElementById("mainControls"),
   fringeSliders = document.getElementById("fringeSliders"),
-  slider = document.getElementById("slider");
+  iterationSlider = document.getElementById("iterationSlider"),
+  backgroundColor = document.getElementById("backgroundColor"),
+  setColor = document.getElementById("setColor");
 
 renderBtn.addEventListener("click", renderBtnClick);
 backBtn.addEventListener("click", goBack);
@@ -38,11 +40,13 @@ let landscape;
 
 window.innerWidth > window.innerHeight ? setLandscape() : setPortrait();
 
-window.onresize = () => {
+var slidersHeight = fringeSliders.clientHeight;
+
+/* window.onresize = () => {
   window.innerWidth < window.innerHeight + 230 ? setPortrait() : setLandscape();
 };
-
-function setPortrait() {
+ */
+/* function setPortrait() {
   landscape = false;
   size = window.innerWidth * 0.9;
   canvas.width = canvas.height = overlay.width = overlay.height = size;
@@ -52,21 +56,20 @@ function setPortrait() {
   controls.style.width = canvasContainer.style.width;
   buttons.style.width = "40%";
 }
-
+ */
 function setLandscape() {
   landscape = true;
-  size = window.innerHeight * 0.9;
+  size = window.innerHeight * 0.95;
   canvas.width = canvas.height = overlay.width = overlay.height = size;
   canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
-  canvasContainer.style.marginTop = "20px";
   fringeSliders.style.height = `${size - 60}px`;
 
-  controls.style.flexDirection = "row";
-  controls.style.height = `${size - 60}px`;
-  controls.style.marginTop = "20px";
+  //controls.style.flexDirection = "row";
+  //controls.style.height = `${size - 60}px`;
+  //controls.style.marginTop = "20px";
 
-  buttons.style.width = controls.style.width;
-  slider.style.width = controls.style.width;
+  //buttons.style.width = controls.style.width;
+  //slider.style.width = controls.style.width;
 }
 
 let iterations = 500;
@@ -144,13 +147,13 @@ function updateRenderList() {
     backBtn.disabled = false;
   }
   renderUpdate = false;
-  console.log(renderList);
   render();
 }
 
 function render() {
   let x = 0;
-  frac.clearRect(0, 0, canvas.width, canvas.height);
+  frac.fillStyle = `#${backgroundColor.value}`;
+  frac.fillRect(0, 0, canvas.width, canvas.height);
   selection.clearRect(0, 0, overlay.width, overlay.height);
   renderBtn.innerText = "Stop";
   resetBtn.disabled = true;
@@ -167,7 +170,7 @@ function render() {
             y * (renderList[count].selectionHeight / size)
         );
         if (belongsToSet == iterations) {
-          frac.fillStyle = "#000";
+          frac.fillStyle = `#${setColor.value}`;
           frac.fillRect(x, y, 1, 1);
         } else if (belongsToSet > (iterations / 100) * percentPositions[4]) {
           frac.fillStyle = `#${fringeColor5.value}`;
@@ -364,13 +367,19 @@ function iterUpdate() {
   iterDisplay.textContent = iterSlider.value;
 }
 
-render();
+//render();
 
 const dragBoxes = Array.from(document.getElementsByClassName("dragBox"));
 const sliderBoxes = Array.from(document.getElementsByClassName("sliderBox"));
 
 var dragStarts = [];
-var dragPositions = [437, 469, 501, 533, 565];
+var dragPositions = [
+  slidersHeight - 5 * 32 - 1,
+  slidersHeight - 4 * 32 - 1,
+  slidersHeight - 3 * 32 - 1,
+  slidersHeight - 2 * 32 - 1,
+  slidersHeight - 1 * 32 - 1
+];
 var percentPositions = [100, 100, 100, 100, 100];
 
 for (n = 0; n < dragPositions.length; n++) {
@@ -386,8 +395,8 @@ for (n = 0; n < dragPositions.length; n++) {
 document.addEventListener("mousemove", e => {
   for (let n = 0; n < dragBoxes.length; n++) {
     if (dragBoxes[n].dragging == true) {
-      let pos = e.clientY - dragStarts[n] - 51;
-      if (pos > n * 32 + 2 && pos < 596 - (5 - n) * 32 + 2) {
+      let pos = e.clientY - dragStarts[n] - 21;
+      if (pos > n * 32 + 2 && pos < slidersHeight - 2 - (5 - n) * 32 + 2) {
         dragPositions[n] = pos;
         sliderBoxes[n].style.top = `${dragPositions[n]}px`;
       }
@@ -421,9 +430,9 @@ function movePrevBox(n) {
 
 function calculatePosition(n, top) {
   top = Number(top.slice(0, -2));
-  let range = 600 - (5 - n) * 32 - n * 32;
+  let range = slidersHeight - (5 - n) * 32 - n * 32;
   let position = top - n * 32 - 3;
   let positionPercent = (100 / range) * position;
-  percentPositions[n] = Math.floor(positionPercent) + 2;
+  percentPositions[n] = Math.floor(positionPercent) + 1;
   console.log(percentPositions);
 }

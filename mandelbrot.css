@@ -4,13 +4,21 @@
   padding: 0;
   font-family: "Quicksand", sans-serif;
 }
-
+span {
+  cursor: default;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+div {
+  border: 0px solid red;
+}
 #container {
   display: flex;
-  flex-flow: row wrap;
   justify-content: center;
+  padding-top: 20px;
 }
-
 #canvasContainer {
   display: flex;
   justify-content: center;
@@ -18,12 +26,10 @@
 }
 
 #controls {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  border: 1px solid green;
 }
-
+#mainControls {
+  display: flex;
+}
 #buttons {
   display: -webkit-box;
   display: flex;
@@ -35,9 +41,7 @@
   height: -webkit-min-content;
   height: -moz-min-content;
   height: min-content;
-  border: 1px solid blue;
 }
-
 button {
   display: block;
   width: 80%;
@@ -50,65 +54,60 @@ button {
   font-size: 1em;
   transition: box-shadow 0.1s;
 }
-
-input {
+.colorLabel {
+  display: flex;
+  width: 100%;
+  padding: 3px;
+  align-items: center;
+  justify-content: flex-start;
+}
+/* input {
   transition: box-shadow 0.1s;
 }
-
 button:hover {
   box-shadow: 2px 2px 4px -1px gray;
 }
-
 input:hover {
   box-shadow: 2px 2px 4px -1px gray;
 }
-
+ */
 #renderBtn {
   font-size: 1.5em;
 }
-
-#slider {
-  display: -webkit-box;
+#iterationSlider {
   display: flex;
-  flex-flow: column wrap;
+  flex-direction: column;
   width: 100%;
-  min-width: 230px;
-  max-width: 400px;
-  border: 1px solid blue;
+  padding: 10px;
 }
-
 .colorPicker {
   display: -webkit-box;
   display: flex;
   flex-direction: row;
 }
-
 #overlay {
   border: 1px solid black;
   z-index: 1;
 }
-
 canvas {
   position: absolute;
 }
-
 .slider {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
   height: 16px;
-  margin-top: 10px;
+  margin-bottom: 5px;
   background: #fff;
   outline: none;
   border: 1px solid #000;
   border-radius: 6px;
   transition: box-shadow 0.1s;
 }
-
-.slider:hover {
+/* .slider:hover {
   box-shadow: 2px 2px 4px -1px gray;
 }
-
+ */
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -118,14 +117,12 @@ canvas {
   background: #292a2b;
   cursor: pointer;
 }
-
 .slider::-moz-range-thumb {
   width: 15px;
   height: 10px;
   background: #292a2b;
   cursor: pointer;
 }
-
 .jscolor {
   display: inline-block;
   width: 40px;
@@ -140,13 +137,13 @@ canvas {
   user-select: none;
 }
 #fringeSliderSurround {
-  border: 1px solid red;
 }
 #fringeSliders {
   position: relative;
   margin-left: 20px;
   width: 100px;
   border: 1px solid #000;
+  border-radius: 4px;
 }
 .sliderBox {
   position: absolute;

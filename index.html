@@ -14,8 +14,8 @@
       <canvas id="frac"></canvas>
       <canvas id="overlay"></canvas>
     </div>
-    <div>
-      <div id="controls">
+    <div id="controls">
+      <div id="mainControls">
         <div id="fringeSliderSurround">
           <div id="fringeSliders">
             <div class="sliderBox">
@@ -45,15 +45,23 @@
           <button id="renderBtn">Render</button>
           <button id="backBtn">Back</button>
           <button id="resetBtn">Reset</button>
+          <button id="resetAllBtn">Reset All</button>
+          <div class="colorLabel">
+            <input class="jscolor" id="setColor" value="000000" readonly>
+            <span>Set</span>
+          </div>
+          <div class="colorLabel">
+            <input class="jscolor" id="backgroundColor" value="ffffff" readonly>
+            <span>Background</span>
+          </div>
+
         </div>
       </div>
 
-      <div id="slider">
-        <p class="sliderBlock">
-          <input type="range" id="iterSlider" class="slider" min="300"
-            max="5000" value="500">
-          <span>Iterations: </span><span id="iterDisplay">500</span>
-        </p>
+      <div id="iterationSlider">
+        <input type="range" id="iterSlider" class="slider" min="300" max="5000"
+          value="500">
+        <span><span>Iterations: </span><span id="iterDisplay">500</span></span>
       </div>
     </div>
   </div>
