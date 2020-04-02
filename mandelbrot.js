@@ -6,6 +6,7 @@ const canvas = document.getElementById("frac"),
 const renderBtn = document.getElementById("renderBtn"),
   backBtn = document.getElementById("backBtn"),
   resetBtn = document.getElementById("resetBtn"),
+  resetAllBtn = document.getElementById("resetAllBtn"),
   iterDisplay = document.getElementById("iterDisplay"),
   iterSlider = document.getElementById("iterSlider"),
   fringeColor1 = document.getElementById("fringeColor00"),
@@ -23,6 +24,7 @@ const renderBtn = document.getElementById("renderBtn"),
 renderBtn.addEventListener("click", renderBtnClick);
 backBtn.addEventListener("click", goBack);
 resetBtn.addEventListener("click", reset);
+resetAllBtn.addEventListener("click", resetAll);
 iterSlider.addEventListener("mousemove", iterUpdate);
 iterSlider.addEventListener("touchmove", iterUpdate);
 iterSlider.addEventListener("change", iterUpdate);
@@ -232,6 +234,52 @@ function reset() {
   backBtn.disabled = true;
   render();
 }
+
+function resetAll() {
+  renderList = [
+    {
+      selectionWidth: 2.4,
+      selectionHeight: 2.4,
+      selectionX: -1.6,
+      selectionY: -1.2
+    }
+  ];
+  selWidth = canvas.width;
+  selHeight = canvas.height;
+  x1 = 0;
+  y1 = 0;
+  count = 0;
+  backBtn.disabled = true;
+
+  dragPositions = [
+    slidersHeight - 5 * sliderBoxHeight - 1,
+    slidersHeight - 4 * sliderBoxHeight - 1,
+    slidersHeight - 3 * sliderBoxHeight - 1,
+    slidersHeight - 2 * sliderBoxHeight - 1,
+    slidersHeight - 1 * sliderBoxHeight - 1
+  ];
+  percentPositions = [100, 100, 100, 100, 100];
+  for (n = 0; n < sliderBoxes.length; n++) {
+    sliderBoxes[n].style.top = `${dragPositions[n]}px`;
+  }
+  fringeColor1.value = "FFFFFF";
+  fringeColor1.style.backgroundColor = "rgb(255, 255, 255)";
+  fringeColor2.value = "FFFFFF";
+  fringeColor2.style.backgroundColor = "rgb(255, 255, 255)";
+  fringeColor3.value = "FFFFFF";
+  fringeColor3.style.backgroundColor = "rgb(255, 255, 255)";
+  fringeColor4.value = "FFFFFF";
+  fringeColor4.style.backgroundColor = "rgb(255, 255, 255)";
+  fringeColor5.value = "FFFFFF";
+  fringeColor5.style.backgroundColor = "rgb(255, 255, 255)";
+  backgroundColor.value = "FFFFFF";
+  backgroundColor.style.backgroundColor = "rgb(255, 255, 255)";
+  setColor.value = "000000";
+  setColor.style.backgroundColor = "rgb(0, 0, 0)";
+  iterations = iterSlider.value = iterDisplay.textContent = 500;
+  render();
+}
+
 
 function canvasClick(e) {
   let rect = overlay.getBoundingClientRect();
