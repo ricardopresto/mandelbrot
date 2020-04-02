@@ -3,6 +3,9 @@ const canvas = document.getElementById("frac"),
   frac = canvas.getContext("2d"),
   selection = overlay.getContext("2d");
 
+const dragBoxes = Array.from(document.getElementsByClassName("dragBox"));
+const sliderBoxes = Array.from(document.getElementsByClassName("sliderBox"));
+
 const renderBtn = document.getElementById("renderBtn"),
   backBtn = document.getElementById("backBtn"),
   resetBtn = document.getElementById("resetBtn"),
@@ -15,8 +18,11 @@ const renderBtn = document.getElementById("renderBtn"),
   fringeColor4 = document.getElementById("fringeColor03"),
   fringeColor5 = document.getElementById("fringeColor04"),
   canvasContainer = document.getElementById("canvasContainer"),
+  container = document.getElementById("container"),
   mainControls = document.getElementById("mainControls"),
+  buttons = document.getElementById("buttons"),
   fringeSliders = document.getElementById("fringeSliders"),
+  fringeSliderSurround = document.getElementById("fringeSliderSurround"),
   iterationSlider = document.getElementById("iterationSlider"),
   backgroundColor = document.getElementById("backgroundColor"),
   setColor = document.getElementById("setColor");
@@ -38,33 +44,97 @@ overlay.addEventListener("touchmove", touchMove);
 overlay.addEventListener("touchstart", touchStart);
 overlay.addEventListener("touchend", touchEnd);
 
-let landscape;
+var iterations = 500;
+var selWidth = canvas.width;
+var selHeight = canvas.height;
+var x1 = 0;
+var y1 = 0;
+var count = 0;
+var boxPositionX, boxPositionY;
+var squareSizeX, squareSizeY;
+var rendering = false;
+var renderUpdate = false;
+var drawingBox = false;
+var dragging = false;
+var finishDrag = false;
+var loop;
 
-window.innerWidth > window.innerHeight ? setLandscape() : setPortrait();
+const sliderBoxHeight = sliderBoxes[0].offsetHeight + 2;
+
+var dragStarts = [];
+var dragPositions = [
+  slidersHeight - 5 * sliderBoxHeight - 1,
+  slidersHeight - 4 * sliderBoxHeight - 1,
+  slidersHeight - 3 * sliderBoxHeight - 1,
+  slidersHeight - 2 * sliderBoxHeight - 1,
+  slidersHeight - 1 * sliderBoxHeight - 1
+];
+var percentPositions = [100, 100, 100, 100, 100];
+
+var renderList = [
+  {
+    selectionWidth: 2.4,
+    selectionHeight: 2.4,
+    selectionX: -1.6,
+    selectionY: -1.2
+  }
+];
+
+if (window.innerWidth < window.innerHeight) {
+  setPortrait();
+} else if (
+  window.innerWidth < window.innerHeight + 250 &&
+  window.innerWidth > window.innerHeight
+) {
+  scaleCanvas();
+} else {
+  fullHeight();
+}
 
 var slidersHeight = fringeSliders.clientHeight;
 
-/* window.onresize = () => {
-  window.innerWidth < window.innerHeight + 230 ? setPortrait() : setLandscape();
+resetSliders();
+
+window.onresize = () => {
+  if (window.innerWidth < window.innerHeight) {
+    setPortrait();
+  } else if (
+    window.innerWidth < window.innerHeight + 250 &&
+    window.innerWidth > window.innerHeight
+  ) {
+    scaleCanvas();
+  } else {
+    fullHeight();
+  }
 };
- */
-/* function setPortrait() {
-  landscape = false;
-  size = window.innerWidth * 0.9;
+
+function scaleCanvas() {
+  size = window.innerWidth - 276;
   canvas.width = canvas.height = overlay.width = overlay.height = size;
   canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
-  canvasContainer.style.marginTop = "50px";
-  controls.style.flexDirection = "row";
-  controls.style.width = canvasContainer.style.width;
-  buttons.style.width = "40%";
+
+  // landscape = false;
+  // size = window.innerWidth * 0.95;
+  // container.style.flexDirection = "column";
+  // canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
+  // canvas.width = canvas.height = overlay.width = overlay.height = size;
+  // fringeSliderSurround.style.transform = "rotate(90deg)";
+  // fringeSliderSurround.style.height = `${size}px`;
+  // buttons.style.flexDirection = "row"
+
+  // canvasContainer.style.marginTop = "50px";
+  // controls.style.flexDirection = "row";
+  // controls.style.width = canvasContainer.style.width;
+  // buttons.style.width = "40%";
 }
- */
-function setLandscape() {
-  landscape = true;
+
+function fullHeight() {
   size = window.innerHeight * 0.95;
   canvas.width = canvas.height = overlay.width = overlay.height = size;
   canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
   fringeSliders.style.height = `${size - 60}px`;
+  slidersHeight = fringeSliders.clientHeight;
+  resetSliders();
 
   //controls.style.flexDirection = "row";
   //controls.style.height = `${size - 60}px`;
@@ -74,29 +144,13 @@ function setLandscape() {
   //slider.style.width = controls.style.width;
 }
 
-let iterations = 500;
-let selWidth = canvas.width;
-let selHeight = canvas.height;
-let x1 = 0;
-let y1 = 0;
-let count = 0;
-let boxPositionX, boxPositionY;
-let squareSizeX, squareSizeY;
-let rendering = false;
-let renderUpdate = false;
-let drawingBox = false;
-let dragging = false;
-let finishDrag = false;
-let loop;
-
-let renderList = [
-  {
-    selectionWidth: 2.4,
-    selectionHeight: 2.4,
-    selectionX: -1.6,
-    selectionY: -1.2
-  }
-];
+function setPortrait() {
+  size = window.innerWidth * 0.95;
+  canvas.width = canvas.height = overlay.width = overlay.height = size;
+  canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
+  fringeSliders.style.height = `${buttons.clientHeight}px`;
+  slidersHeight = fringeSliders.clientHeight;
+}
 
 function mandelbrotCheck(x, y) {
   let real = x;
@@ -160,6 +214,7 @@ function render() {
   renderBtn.innerText = "Stop";
   resetBtn.disabled = true;
   backBtn.disabled = true;
+  resetAllBtn.disabled = true;
   rendering = true;
 
   loop = setInterval(function() {
@@ -194,7 +249,9 @@ function render() {
     }
     x++;
     if (x > size) {
+      rendering = false;
       resetBtn.disabled = false;
+      resetAllBtn.disabled = false;
       count > 0 ? (backBtn.disabled = false) : null;
       renderBtn.innerText = "Render";
       clearInterval(loop);
@@ -206,6 +263,7 @@ function stop() {
   clearInterval(loop);
   rendering = false;
   resetBtn.disabled = false;
+  resetAllBtn.disabled = false;
   count > 0 ? (backBtn.disabled = false) : null;
   renderBtn.innerText = "Render";
 }
@@ -250,18 +308,7 @@ function resetAll() {
   y1 = 0;
   count = 0;
   backBtn.disabled = true;
-
-  dragPositions = [
-    slidersHeight - 5 * sliderBoxHeight - 1,
-    slidersHeight - 4 * sliderBoxHeight - 1,
-    slidersHeight - 3 * sliderBoxHeight - 1,
-    slidersHeight - 2 * sliderBoxHeight - 1,
-    slidersHeight - 1 * sliderBoxHeight - 1
-  ];
-  percentPositions = [100, 100, 100, 100, 100];
-  for (n = 0; n < sliderBoxes.length; n++) {
-    sliderBoxes[n].style.top = `${dragPositions[n]}px`;
-  }
+  resetSliders();
   fringeColor1.value = "FFFFFF";
   fringeColor1.style.backgroundColor = "rgb(255, 255, 255)";
   fringeColor2.value = "FFFFFF";
@@ -277,9 +324,21 @@ function resetAll() {
   setColor.value = "000000";
   setColor.style.backgroundColor = "rgb(0, 0, 0)";
   iterations = iterSlider.value = iterDisplay.textContent = 500;
-  render();
 }
 
+function resetSliders() {
+  dragPositions = [
+    slidersHeight - 5 * sliderBoxHeight - 1,
+    slidersHeight - 4 * sliderBoxHeight - 1,
+    slidersHeight - 3 * sliderBoxHeight - 1,
+    slidersHeight - 2 * sliderBoxHeight - 1,
+    slidersHeight - 1 * sliderBoxHeight - 1
+  ];
+  for (n = 0; n < sliderBoxes.length; n++) {
+    sliderBoxes[n].style.top = `${dragPositions[n]}px`;
+  }
+  percentPositions = [100, 100, 100, 100, 100];
+}
 
 function canvasClick(e) {
   let rect = overlay.getBoundingClientRect();
@@ -417,35 +476,21 @@ function iterUpdate() {
 
 //render();
 
-const dragBoxes = Array.from(document.getElementsByClassName("dragBox"));
-const sliderBoxes = Array.from(document.getElementsByClassName("sliderBox"));
-
-const sliderBoxHeight = sliderBoxes[0].offsetHeight + 2;
-
-var dragStarts = [];
-var dragPositions = [
-  slidersHeight - 5 * sliderBoxHeight - 1,
-  slidersHeight - 4 * sliderBoxHeight - 1,
-  slidersHeight - 3 * sliderBoxHeight - 1,
-  slidersHeight - 2 * sliderBoxHeight - 1,
-  slidersHeight - 1 * sliderBoxHeight - 1
-];
-var percentPositions = [100, 100, 100, 100, 100];
-
-for (n = 0; n < dragPositions.length; n++) {
+for (let n = 0; n < dragPositions.length; n++) {
   dragBoxes[n].dragging = false;
   sliderBoxes[n].style.top = dragPositions[n] + "px";
 
   dragBoxes[n].addEventListener("mousedown", e => {
     dragBoxes[e.target.id].dragging = true;
     dragStarts[e.target.id] = e.offsetY;
+    console.log("arse");
   });
 }
 
 document.addEventListener("mousemove", e => {
   for (let n = 0; n < dragBoxes.length; n++) {
     if (dragBoxes[n].dragging == true) {
-      let pos = e.clientY - dragStarts[n] - 21;
+      let pos = e.clientY - dragStarts[n] - 20;
       if (
         pos > n * sliderBoxHeight + 2 &&
         pos < slidersHeight - 2 - (5 - n) * sliderBoxHeight + 2
@@ -489,5 +534,4 @@ function calculatePosition(n, top) {
   let position = top - n * sliderBoxHeight - 3;
   let positionPercent = (100 / range) * position;
   percentPositions[n] = Math.floor(positionPercent) + 1;
-  console.log(percentPositions);
 }

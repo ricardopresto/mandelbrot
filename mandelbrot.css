@@ -15,9 +15,10 @@ div {
   border: 0px solid red;
 }
 #container {
+  height: 100vh;
   display: flex;
   justify-content: center;
-  padding-top: 20px;
+  align-items: center;
 }
 #canvasContainer {
   display: flex;
@@ -41,7 +42,9 @@ div {
   height: -webkit-min-content;
   height: -moz-min-content;
   height: min-content;
-  margin-top: 4rem;
+}
+#buttonsSurround {
+  padding-top: 20px;
 }
 button {
   display: block;
@@ -167,4 +170,41 @@ canvas {
   width: 30px;
   background-color: #666;
   border-radius: 0 6px 6px 0;
+}
+@media screen and (max-height: 525px) {
+  #buttonsSurround {
+    padding-top: 10px;
+  }
+  button {
+    height: 3em;
+    font-size: 1em;
+    padding: 0.2em;
+    margin: 0.3em;
+  }
+}
+@media screen and (max-height: 400px) {
+  #buttonsSurround {
+    padding-top: 5px;
+  }
+  button {
+    height: 2em;
+    font-size: 0.8em;
+    padding: 0;
+    margin: 0.2em;
+  }
+}
+@media screen and (orientation: portrait) {
+  #container {
+    flex-direction: column;
+    height: auto;
+    width: 100%;
+  }
+  #buttons {
+  }
+  #fringeSliderSurround {
+  }
+  #controls {
+  }
+  #mainControls {
+  }
 }
