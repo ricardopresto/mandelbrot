@@ -1,3 +1,5 @@
+"use strict";
+
 const canvas = document.getElementById("frac"),
   overlay = document.getElementById("overlay"),
   frac = canvas.getContext("2d"),
@@ -57,7 +59,7 @@ var renderUpdate = false;
 var drawingBox = false;
 var dragging = false;
 var finishDrag = false;
-var loop;
+var size, loop;
 
 const sliderBoxHeight = sliderBoxes[0].offsetHeight + 2;
 var slidersHeight = fringeSliders.clientHeight;
@@ -122,8 +124,8 @@ function mandelbrotCheck(x, y) {
   let imag = y;
 
   for (let i = 0; i < iterations; i++) {
-    tempX = real * real - imag * imag + x;
-    tempY = 2 * real * imag + y;
+    let tempX = real * real - imag * imag + x;
+    let tempY = 2 * real * imag + y;
 
     real = tempX;
     imag = tempY;
@@ -299,7 +301,7 @@ function resetSliders() {
     slidersHeight - 2 * sliderBoxHeight - 1,
     slidersHeight - 1 * sliderBoxHeight - 1
   ];
-  for (n = 0; n < sliderBoxes.length; n++) {
+  for (let n = 0; n < sliderBoxes.length; n++) {
     sliderBoxes[n].style.top = `${dragPositions[n]}px`;
   }
   percentPositions = [100, 100, 100, 100, 100];
@@ -503,13 +505,13 @@ document.addEventListener("touchmove", e => {
 });
 
 document.addEventListener("mouseup", () => {
-  for (n = 0; n < dragPositions.length; n++) {
+  for (let n = 0; n < dragPositions.length; n++) {
     dragBoxes[n].dragging = false;
   }
 });
 
 document.addEventListener("touchend", () => {
-  for (n = 0; n < dragPositions.length; n++) {
+  for (let n = 0; n < dragPositions.length; n++) {
     dragBoxes[n].dragging = false;
   }
 });
