@@ -100,8 +100,10 @@ function scaleCanvas() {
   size = window.innerWidth - 280;
   canvas.width = canvas.height = overlay.width = overlay.height = size;
   canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
-  fringeSliders.style.height = `${size - 60}px`;
-  slidersHeight = fringeSliders.clientHeight;
+  if (size > 375) {
+    fringeSliders.style.height = `${size - 60}px`;
+    slidersHeight = fringeSliders.clientHeight;
+  }
   canvasContainer.style.alignSelf = "flex-start";
   resetSliders();
 }
@@ -447,12 +449,22 @@ for (let n = 0; n < dragPositions.length; n++) {
     dragBoxes[e.target.id].dragging = true;
     dragStarts[e.target.id] = e.offsetY;
   });
+  dragBoxes[n].addEventListener("touchstart", e => {
+    e.preventDefault();
+    if (e.targetTouches.length == 1) {
+      let touch = e.targetTouches[0];
+      dragBoxes[touch.target.id].dragging = true;
+      dragStarts[touch.target.id] = touch.clientY;
+      console.log(touch.clientY);
+    }
+  });
 }
 
 document.addEventListener("mousemove", e => {
   for (let n = 0; n < dragBoxes.length; n++) {
     if (dragBoxes[n].dragging == true) {
       let pos = e.clientY - dragStarts[n] - 20;
+      console.log(e.clientY);
       if (
         pos > n * sliderBoxHeight + 2 &&
         pos < slidersHeight - 2 - (5 - n) * sliderBoxHeight + 2
@@ -469,7 +481,38 @@ document.addEventListener("mousemove", e => {
   }
 });
 
+document.addEventListener("touchmove", e => {
+  if (e.targetTouches.length == 1) {
+    let touch = e.targetTouches[0];
+    for (let n = 0; n < dragBoxes.length; n++) {
+      if (dragBoxes[n].dragging == true) {
+        console.log(touch.clientY);
+        let pos = touch.clientY - dragStarts[n] - 20;
+        if (
+          pos > n * sliderBoxHeight + 2 &&
+          pos < slidersHeight - 2 - (5 - n) * sliderBoxHeight + 2
+        ) {
+          dragPositions[n] = pos;
+          console.log(dragPositions);
+          sliderBoxes[n].style.top = `${dragPositions[n]}px`;
+        }
+        calculatePosition(n, sliderBoxes[n].style.top);
+      }
+      moveNextBox(n);
+    }
+    for (let n = dragBoxes.length - 1; n >= 0; n--) {
+      movePrevBox(n);
+    }
+  }
+});
+
 document.addEventListener("mouseup", () => {
+  for (n = 0; n < dragPositions.length; n++) {
+    dragBoxes[n].dragging = false;
+  }
+});
+
+document.addEventListener("touchend", () => {
   for (n = 0; n < dragPositions.length; n++) {
     dragBoxes[n].dragging = false;
   }
