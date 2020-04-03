@@ -60,6 +60,7 @@ var finishDrag = false;
 var loop;
 
 const sliderBoxHeight = sliderBoxes[0].offsetHeight + 2;
+var slidersHeight = fringeSliders.clientHeight;
 
 var dragStarts = [];
 var dragPositions = [
@@ -80,76 +81,38 @@ var renderList = [
   }
 ];
 
-if (window.innerWidth < window.innerHeight) {
-  setPortrait();
-} else if (
-  window.innerWidth < window.innerHeight + 250 &&
-  window.innerWidth > window.innerHeight
-) {
-  scaleCanvas();
-} else {
-  fullHeight();
-}
-
-var slidersHeight = fringeSliders.clientHeight;
-
-resetSliders();
-
-window.onresize = () => {
-  if (window.innerWidth < window.innerHeight) {
-    setPortrait();
-  } else if (
-    window.innerWidth < window.innerHeight + 250 &&
-    window.innerWidth > window.innerHeight
-  ) {
+function updateLayout() {
+  if (window.innerWidth < window.innerHeight + 260) {
     scaleCanvas();
   } else {
     fullHeight();
   }
+}
+
+resetSliders();
+updateLayout();
+
+window.onresize = () => {
+  updateLayout();
 };
 
 function scaleCanvas() {
-  size = window.innerWidth - 276;
+  size = window.innerWidth - 280;
   canvas.width = canvas.height = overlay.width = overlay.height = size;
   canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
-
-  // landscape = false;
-  // size = window.innerWidth * 0.95;
-  // container.style.flexDirection = "column";
-  // canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
-  // canvas.width = canvas.height = overlay.width = overlay.height = size;
-  // fringeSliderSurround.style.transform = "rotate(90deg)";
-  // fringeSliderSurround.style.height = `${size}px`;
-  // buttons.style.flexDirection = "row"
-
-  // canvasContainer.style.marginTop = "50px";
-  // controls.style.flexDirection = "row";
-  // controls.style.width = canvasContainer.style.width;
-  // buttons.style.width = "40%";
+  fringeSliders.style.height = `${size - 60}px`;
+  slidersHeight = fringeSliders.clientHeight;
+  canvasContainer.style.alignSelf = "flex-start";
+  resetSliders();
 }
 
 function fullHeight() {
-  size = window.innerHeight * 0.95;
+  size = window.innerHeight - 42;
   canvas.width = canvas.height = overlay.width = overlay.height = size;
   canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
   fringeSliders.style.height = `${size - 60}px`;
   slidersHeight = fringeSliders.clientHeight;
   resetSliders();
-
-  //controls.style.flexDirection = "row";
-  //controls.style.height = `${size - 60}px`;
-  //controls.style.marginTop = "20px";
-
-  //buttons.style.width = controls.style.width;
-  //slider.style.width = controls.style.width;
-}
-
-function setPortrait() {
-  size = window.innerWidth * 0.95;
-  canvas.width = canvas.height = overlay.width = overlay.height = size;
-  canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
-  fringeSliders.style.height = `${buttons.clientHeight}px`;
-  slidersHeight = fringeSliders.clientHeight;
 }
 
 function mandelbrotCheck(x, y) {
@@ -483,7 +446,6 @@ for (let n = 0; n < dragPositions.length; n++) {
   dragBoxes[n].addEventListener("mousedown", e => {
     dragBoxes[e.target.id].dragging = true;
     dragStarts[e.target.id] = e.offsetY;
-    console.log("arse");
   });
 }
 
