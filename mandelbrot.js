@@ -454,8 +454,7 @@ for (let n = 0; n < dragPositions.length; n++) {
     if (e.targetTouches.length == 1) {
       let touch = e.targetTouches[0];
       dragBoxes[touch.target.id].dragging = true;
-      dragStarts[touch.target.id] = touch.clientY;
-      console.log(touch.clientY);
+      dragStarts[touch.target.id] = 15;
     }
   });
 }
@@ -464,7 +463,6 @@ document.addEventListener("mousemove", e => {
   for (let n = 0; n < dragBoxes.length; n++) {
     if (dragBoxes[n].dragging == true) {
       let pos = e.clientY - dragStarts[n] - 20;
-      console.log(e.clientY);
       if (
         pos > n * sliderBoxHeight + 2 &&
         pos < slidersHeight - 2 - (5 - n) * sliderBoxHeight + 2
@@ -486,14 +484,12 @@ document.addEventListener("touchmove", e => {
     let touch = e.targetTouches[0];
     for (let n = 0; n < dragBoxes.length; n++) {
       if (dragBoxes[n].dragging == true) {
-        console.log(touch.clientY);
         let pos = touch.clientY - dragStarts[n] - 20;
         if (
           pos > n * sliderBoxHeight + 2 &&
           pos < slidersHeight - 2 - (5 - n) * sliderBoxHeight + 2
         ) {
           dragPositions[n] = pos;
-          console.log(dragPositions);
           sliderBoxes[n].style.top = `${dragPositions[n]}px`;
         }
         calculatePosition(n, sliderBoxes[n].style.top);
