@@ -26,9 +26,6 @@ div {
   justify-content: center;
   align-items: center;
 }
-
-#controls {
-}
 #mainControls {
   display: flex;
 }
@@ -65,16 +62,6 @@ button {
   align-items: center;
   justify-content: flex-start;
 }
-/* input {
-  transition: box-shadow 0.1s;
-}
-button:hover {
-  box-shadow: 2px 2px 4px -1px gray;
-}
-input:hover {
-  box-shadow: 2px 2px 4px -1px gray;
-}
- */
 #renderBtn {
   font-size: 1.5em;
 }
@@ -108,10 +95,6 @@ canvas {
   border-radius: 6px;
   transition: box-shadow 0.1s;
 }
-/* .slider:hover {
-  box-shadow: 2px 2px 4px -1px gray;
-}
- */
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -139,8 +122,6 @@ canvas {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-}
-#fringeSliderSurround {
 }
 #fringeSliders {
   position: relative;
@@ -193,7 +174,7 @@ canvas {
     margin: 0.2em;
   }
 }
-/* @media screen and (orientation: portrait) {
+@media screen and (orientation: portrait) {
   #container {
     flex-direction: column;
     height: auto;
@@ -207,4 +188,4 @@ canvas {
   }
   #mainControls {
   }
-} */
+}

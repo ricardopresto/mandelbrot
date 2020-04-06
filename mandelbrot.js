@@ -84,7 +84,9 @@ var renderList = [
 ];
 
 function updateLayout() {
-  if (window.innerWidth < window.innerHeight + 260) {
+  if (window.innerWidth < window.innerHeight) {
+    portrait();
+  } else if (window.innerWidth < window.innerHeight + 260) {
     scaleCanvas();
   } else {
     fullHeight();
@@ -117,6 +119,12 @@ function fullHeight() {
   fringeSliders.style.height = `${size - 60}px`;
   slidersHeight = fringeSliders.clientHeight;
   resetSliders();
+}
+
+function portrait() {
+  size = window.innerWidth - 42;
+  canvas.width = canvas.height = overlay.width = overlay.height = size;
+  canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
 }
 
 function mandelbrotCheck(x, y) {
