@@ -12,7 +12,7 @@ span {
   user-select: none;
 }
 div {
-  border: 0px solid red;
+  border: 1px solid red;
 }
 #container {
   height: 100%;
@@ -179,8 +179,16 @@ canvas {
     flex-direction: column;
     height: auto;
     width: 100%;
+    padding: 20px;
   }
-  #buttons {
+  #buttonsSurround {
+    padding-top: 5px;
+  }
+  button {
+    height: 2em;
+    font-size: 0.8em;
+    padding: 0;
+    margin: 0.2em;
   }
   #fringeSliderSurround {
   }

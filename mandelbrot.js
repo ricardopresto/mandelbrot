@@ -59,7 +59,7 @@ var renderUpdate = false;
 var drawingBox = false;
 var dragging = false;
 var finishDrag = false;
-var size, loop;
+var size, loop, sliderOffset;
 
 const sliderBoxHeight = sliderBoxes[0].offsetHeight + 2;
 var slidersHeight = fringeSliders.clientHeight;
@@ -101,6 +101,7 @@ window.onresize = () => {
 };
 
 function scaleCanvas() {
+  sliderOffset = 20;
   size = window.innerWidth - 280;
   canvas.width = canvas.height = overlay.width = overlay.height = size;
   canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
@@ -113,6 +114,7 @@ function scaleCanvas() {
 }
 
 function fullHeight() {
+  sliderOffset = 20;
   size = window.innerHeight - 42;
   canvas.width = canvas.height = overlay.width = overlay.height = size;
   canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
@@ -123,8 +125,12 @@ function fullHeight() {
 
 function portrait() {
   size = window.innerWidth - 42;
+  sliderOffset = size + 20;
   canvas.width = canvas.height = overlay.width = overlay.height = size;
   canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
+  fringeSliders.style.height = `${window.innerHeight - size - 60}px`;
+  slidersHeight = fringeSliders.clientHeight;
+  resetSliders();
 }
 
 function mandelbrotCheck(x, y) {
@@ -494,7 +500,7 @@ document.addEventListener("touchmove", e => {
     let touch = e.targetTouches[0];
     for (let n = 0; n < dragBoxes.length; n++) {
       if (dragBoxes[n].dragging == true) {
-        let pos = touch.clientY - dragStarts[n] - 20;
+        let pos = touch.clientY - dragStarts[n] - sliderOffset;
         if (
           pos > n * sliderBoxHeight + 2 &&
           pos < slidersHeight - 2 - (5 - n) * sliderBoxHeight + 2
