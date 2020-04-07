@@ -11,9 +11,6 @@ span {
   -ms-user-select: none;
   user-select: none;
 }
-div {
-  border: 1px solid red;
-}
 #container {
   height: 100%;
   padding: 20px 0;
@@ -53,7 +50,10 @@ button {
   border: 1px solid #000;
   border-radius: 4px;
   font-size: 1em;
-  transition: box-shadow 0.1s;
+  transition: all 0.1s;
+}
+button:hover {
+  box-shadow: inset 0px 0px 5px #aaa;
 }
 .colorLabel {
   display: flex;
@@ -78,6 +78,7 @@ button {
 }
 #overlay {
   border: 1px solid black;
+  border-radius: 4px;
   z-index: 1;
 }
 canvas {
@@ -191,9 +192,6 @@ canvas {
     margin: 0.2em;
   }
   #fringeSliderSurround {
-  }
-  #controls {
-  }
-  #mainControls {
+    margin-top: 10px;
   }
 }

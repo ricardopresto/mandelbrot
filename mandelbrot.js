@@ -100,9 +100,13 @@ window.onresize = () => {
   updateLayout();
 };
 
+window.onscroll = () => {
+  sliderOffset = size + 30 - window.scrollY;
+};
+
 function scaleCanvas() {
-  sliderOffset = 20;
   size = window.innerWidth - 280;
+  sliderOffset = 20;
   canvas.width = canvas.height = overlay.width = overlay.height = size;
   canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
   if (size > 375) {
@@ -114,8 +118,8 @@ function scaleCanvas() {
 }
 
 function fullHeight() {
-  sliderOffset = 20;
   size = window.innerHeight - 42;
+  sliderOffset = 20;
   canvas.width = canvas.height = overlay.width = overlay.height = size;
   canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
   fringeSliders.style.height = `${size - 60}px`;
@@ -125,10 +129,13 @@ function fullHeight() {
 
 function portrait() {
   size = window.innerWidth - 42;
-  sliderOffset = size + 20;
+  sliderOffset = size + 30;
   canvas.width = canvas.height = overlay.width = overlay.height = size;
   canvasContainer.style.height = canvasContainer.style.width = `${size}px`;
-  fringeSliders.style.height = `${window.innerHeight - size - 60}px`;
+  let h = window.innerHeight - size - 60;
+  h > 300
+    ? (fringeSliders.style.height = `${h}px`)
+    : (fringeSliders.style.height = "300px");
   slidersHeight = fringeSliders.clientHeight;
   resetSliders();
 }
@@ -305,6 +312,7 @@ function resetAll() {
   setColor.value = "000000";
   setColor.style.backgroundColor = "rgb(0, 0, 0)";
   iterations = iterSlider.value = iterDisplay.textContent = 500;
+  render();
 }
 
 function resetSliders() {
@@ -455,7 +463,7 @@ function iterUpdate() {
   iterDisplay.textContent = iterSlider.value;
 }
 
-//render();
+render();
 
 for (let n = 0; n < dragPositions.length; n++) {
   dragBoxes[n].dragging = false;
