@@ -1,0 +1,29 @@
+:root {
+  --main-color: #fff;
+  --button-color: #fff;
+  --sliderbox-color: #fff;
+  --std-shadow: inset 0px 0px 8px #717586;
+  --hover-shadow: inset 0px 0px 13px #5c5f6c;
+}
+body {
+  background-color: var(--main-color);
+}
+button,
+.sliderBox {
+  background-color: var(--button-color);
+  box-shadow: var(--std-shadow);
+}
+button:hover {
+  box-shadow: var(--hover-shadow);
+}
+#fringeSliders,
+#iterSlider {
+  background-color: var(--sliderbox-color);
+  box-shadow: var(--std-shadow);
+}
+.jscolor {
+  border-radius: 3px;
+}
+button:disabled {
+  color: #bcbec6;
+}
